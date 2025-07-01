@@ -121,26 +121,13 @@ function App() {
                   icon={<Code className="w-8 h-8 text-white" />}
                   bgColor="bg-blue-500"
                 />
-                <div className="bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl p-6 text-white relative overflow-hidden">
-                  <div className="absolute top-4 right-4 bg-white/20 px-2 py-1 rounded-full text-xs">
-                    ✨
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                    <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mb-4">
-                      <Smartphone className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="font-semibold mb-1">iOS Developer</h3>
-                    <p className="text-sm opacity-75">1 Candidate</p>
-                  </div>
-                  <div className="absolute bottom-4 right-4 bg-white rounded-lg p-2 text-xs text-gray-600">
-                    <div className="space-y-1">
-                      <div className="text-xs">Description</div>
-                      <div className="text-xs">Hiring</div>
-                      <div className="text-xs">Duration</div>
-                      <div className="text-xs">Schedule</div>
-                    </div>
-                  </div>
-                </div>
+                <JobCard
+                  title="iOS Developer"
+                  candidates={1}
+                  icon={<Smartphone className="w-8 h-8 text-white" />}
+                  bgColor="bg-teal-500"
+                  options={["Description", "Hiring", "Duration", "Schedule"]}
+                />
               </div>
             </div>
 
