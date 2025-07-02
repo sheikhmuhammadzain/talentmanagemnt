@@ -5,6 +5,7 @@ import StatCard from '../components/StatCard';
 import JobCard from '../components/JobCard';
 import RecruitmentTable from '../components/RecruitmentTable';
 import CardContainer from '../components/CardContainer';
+import ChatBot from '../components/ChatBot';
 import { 
   getStatData, 
   getJobCardData, 
@@ -166,6 +167,9 @@ const DashboardPage: React.FC = () => {
       <CardContainer title="Recruitment Progress">
         <RecruitmentTable data={recruitmentData} />
       </CardContainer>
+      
+      {/* ChatBot Component */}
+      <ChatBot />
     </div>
   );
 };
