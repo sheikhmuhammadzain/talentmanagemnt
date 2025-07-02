@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Plus, Bell, Settings } from 'lucide-react';
+import { Search, Bell, Settings } from 'lucide-react';
 import { userData } from '../config/appConfig';
 
 interface HeaderProps {
@@ -8,11 +8,11 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
   const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>('light');
-  const [activePage, setActivePage] = useState('recruitment');
+  const [activePage, setActivePage] = useState('dashboard');
 
   // Navigation items for header
   const navItems = [
-    { id: 'recruitment', label: 'Recruitment' },
+    { id: 'dashboard', label: 'Dashboard' },
     { id: 'overview', label: 'Overview' }
   ];
 
@@ -25,15 +25,15 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-white border-b border-gray-200 px-4 py-2">
       <div className="flex items-center justify-between">
         {/* Navigation */}
-        <div className="flex items-center gap-6">
-          <nav className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          <nav className="flex items-center gap-4">
             {navItems.map(item => (
               <button
                 key={item.id}
-                className={`font-medium ${
+                className={`text-sm font-medium ${
                   activePage === item.id ? 'text-purple-600' : 'text-gray-600 hover:text-gray-900'
                 }`}
                 onClick={() => setActivePage(item.id)}
@@ -45,11 +45,11 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
         </div>
 
         {/* Right Side Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {/* Theme Toggle */}
-          <div className="flex bg-gray-100 rounded-lg p-1">
+          <div className="flex bg-gray-100 rounded-lg p-0.5">
             <button 
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              className={`px-2 py-1 text-xs rounded-md transition-colors ${
                 activeTheme === 'dark' ? 'bg-purple-600 text-white' : 'text-gray-600'
               }`}
               onClick={() => handleThemeChange('dark')}
@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
               Dark
             </button>
             <button 
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              className={`px-2 py-1 text-xs rounded-md transition-colors ${
                 activeTheme === 'light' ? 'bg-purple-600 text-white' : 'text-gray-600'
               }`}
               onClick={() => handleThemeChange('light')}
@@ -66,34 +66,27 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
             </button>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
-            <button className="p-2 text-gray-600 hover:text-gray-900 relative">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-purple-600 rounded-full"></span>
-            </button>
-            <button className="p-2 text-gray-600 hover:text-gray-900">
-              <Settings className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Search */}
+          <button className="p-1.5 text-gray-600 hover:text-gray-900">
+            <Search className="w-4 h-4" />
+          </button>
 
-          {/* Export and Add buttons */}
-          <div className="flex items-center gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50">
-              <Download className="w-4 h-4" />
-              Export
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">
-              <Plus className="w-4 h-4" />
-              Add
-            </button>
-          </div>
+          {/* Settings */}
+          <button className="p-1.5 text-gray-600 hover:text-gray-900">
+            <Settings className="w-4 h-4" />
+          </button>
+
+          {/* Notification */}
+          <button className="p-1.5 text-gray-600 hover:text-gray-900 relative">
+            <Bell className="w-4 h-4" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-purple-600 rounded-full text-white text-xs flex items-center justify-center">3</span>
+          </button>
 
           {/* User Avatar */}
           <img
             src={userData.avatar}
             alt={userData.name}
-            className="w-10 h-10 rounded-full object-cover"
+            className="w-8 h-8 rounded-full object-cover"
           />
         </div>
       </div>

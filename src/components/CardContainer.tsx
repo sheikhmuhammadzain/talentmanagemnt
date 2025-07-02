@@ -16,18 +16,16 @@ const CardContainer: React.FC<CardContainerProps> = ({
   viewAllLink
 }) => {
   return (
-    <div className={`mb-8 ${className}`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+    <div className={`mb-6 ${className}`}>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-medium text-gray-900">{title}</h2>
         {(onViewAll || viewAllLink) && (
           <button 
             onClick={onViewAll}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+            className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
           >
-            <span className="text-sm">View All</span>
-            <div className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center">
-              <div className="w-2 h-1 bg-gray-400 rounded-full"></div>
-            </div>
+            <span className="text-xs">View All</span>
+            <span className="text-xs">□</span>
           </button>
         )}
       </div>

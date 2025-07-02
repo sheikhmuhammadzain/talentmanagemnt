@@ -27,9 +27,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
   
   return (
     <span 
-      className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${colors.bg} ${colors.text} ${className}`}
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${colors.bg} ${colors.text} ${className}`}
     >
-      <span className={`w-2 h-2 rounded-full ${dotColor}`}></span>
+      <span className={`w-1.5 h-1.5 rounded-full ${dotColor}`}></span>
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
