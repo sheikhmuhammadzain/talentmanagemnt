@@ -1,158 +1,17 @@
 import React, { useState } from 'react';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
-import StatCard from './components/StatCard';
-import JobCard from './components/JobCard';
-import RecruitmentTable from './components/RecruitmentTable';
-import RecruitmentPage from './components/RecruitmentPage';
-import ChatBot from './components/ChatBot';
-import { Code, Edit, FileText, Smartphone, Users, Calendar, Clock } from 'lucide-react';
+import Layout from './components/Layout';
+import { getRouteComponent } from './routes';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  // Illustrations for stat cards
-  const EmployeeIllustration = () => (
-    <div className="flex items-center gap-2">
-      <div className="w-12 h-16 bg-white/20 rounded-lg flex items-center justify-center">
-        <Users className="w-6 h-6 text-white" />
-      </div>
-      <div className="w-10 h-14 bg-white/15 rounded-lg flex items-center justify-center">
-        <Users className="w-5 h-5 text-white" />
-      </div>
-      <div className="w-8 h-12 bg-white/10 rounded-lg flex items-center justify-center">
-        <Users className="w-4 h-4 text-white" />
-      </div>
-    </div>
-  );
-
-  const PositionsIllustration = () => (
-    <div className="flex items-center gap-2">
-      <div className="w-12 h-16 bg-white/20 rounded-lg flex items-center justify-center">
-        <FileText className="w-6 h-6 text-white" />
-      </div>
-      <div className="w-10 h-14 bg-white/15 rounded-lg flex items-center justify-center">
-        <Edit className="w-5 h-5 text-white" />
-      </div>
-    </div>
-  );
-
-  const TimeIllustration = () => (
-    <div className="relative">
-      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-        <Clock className="w-8 h-8 text-white" />
-      </div>
-      <div className="absolute -top-2 -right-2 w-6 h-6 bg-white/30 rounded-full flex items-center justify-center">
-        <Calendar className="w-3 h-3 text-white" />
-      </div>
-    </div>
-  );
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'recruitment':
-        return <RecruitmentPage />;
-      case 'dashboard':
-      default:
-        return (
-          <>
-            {/* Welcome Section */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Ali Hamza</h1>
-              <p className="text-gray-600">Track, Manage anf Forecast Your Employees Onboarding</p>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <StatCard
-                title="Total Employees"
-                value="38"
-                change="12%"
-                changeType="increase"
-                bgColor="bg-gradient-to-br from-purple-500 to-purple-600"
-                illustration={<EmployeeIllustration />}
-              />
-              <StatCard
-                title="Open Positions"
-                value="5"
-                change="5%"
-                changeType="increase"
-                bgColor="bg-gradient-to-br from-orange-400 to-orange-500"
-                illustration={<PositionsIllustration />}
-              />
-              <StatCard
-                title="Time to Hire"
-                value="20 Days"
-                change="5%"
-                changeType="increase"
-                bgColor="bg-gradient-to-br from-teal-400 to-teal-500"
-                illustration={<TimeIllustration />}
-              />
-            </div>
-
-            {/* You Need To Hire Section */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900">You Need To Hire</h2>
-                <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-                  <span className="text-sm">View All</span>
-                  <div className="w-4 h-4 border-2 border-gray-400 rounded-sm flex items-center justify-center">
-                    <div className="w-2 h-1 bg-gray-400 rounded-full"></div>
-                  </div>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <JobCard
-                  title="PHP Developer"
-                  candidates={1}
-                  icon={<Code className="w-8 h-8 text-white" />}
-                  bgColor="bg-orange-500"
-                />
-                <JobCard
-                  title="Content Writer"
-                  candidates={1}
-                  icon={<Edit className="w-8 h-8 text-white" />}
-                  bgColor="bg-purple-500"
-                />
-                <JobCard
-                  title="PHP Developer"
-                  candidates={1}
-                  icon={<Code className="w-8 h-8 text-white" />}
-                  bgColor="bg-blue-500"
-                />
-                <JobCard
-                  title="iOS Developer"
-                  candidates={1}
-                  icon={<Smartphone className="w-8 h-8 text-white" />}
-                  bgColor="bg-teal-500"
-                  options={["Description", "Hiring", "Duration", "Schedule"]}
-                />
-              </div>
-            </div>
-
-            {/* Recruitment Progress Table */}
-            <RecruitmentTable />
-          </>
-        );
-    }
-  };
+  // Get the component for the current route
+  const CurrentPage = getRouteComponent(activeTab);
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header />
-        
-        <main className="flex-1 overflow-y-auto p-6">
-          {renderContent()}
-        </main>
-      </div>
-
-      {/* Chat Bot */}
-      <ChatBot />
-    </div>
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+      <CurrentPage />
+    </Layout>
   );
 }
 

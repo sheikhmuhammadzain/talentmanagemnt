@@ -1,76 +1,13 @@
 import React from 'react';
 import { Edit3, ChevronLeft, ChevronRight } from 'lucide-react';
+import { RecruitmentProgress } from '../services/dashboardService';
+import StatusBadge from './StatusBadge';
 
-interface Candidate {
-  id: number;
-  name: string;
-  avatar: string;
-  designation: string;
-  department: string;
-  status: 'interviewed' | 'hired' | 'qualified';
+interface RecruitmentTableProps {
+  data: RecruitmentProgress[];
 }
 
-const candidates: Candidate[] = [
-  {
-    id: 1,
-    name: 'Robert Fox',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop',
-    designation: 'UI/UX Designer',
-    department: 'Design',
-    status: 'interviewed'
-  },
-  {
-    id: 2,
-    name: 'Marvin McKinney',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop',
-    designation: 'Content Creator',
-    department: 'SEO',
-    status: 'interviewed'
-  },
-  {
-    id: 3,
-    name: 'Arlene McCoy',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop',
-    designation: 'Android Developer',
-    department: 'Devs',
-    status: 'hired'
-  },
-  {
-    id: 4,
-    name: 'Brooklyn Simmons',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop',
-    designation: 'Content Creator',
-    department: 'SEO',
-    status: 'qualified'
-  },
-  {
-    id: 5,
-    name: 'Brooklyn Simmons',
-    avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop',
-    designation: 'Content Creator',
-    department: 'SEO',
-    status: 'qualified'
-  }
-];
-
-const RecruitmentTable: React.FC = () => {
-  const getStatusBadge = (status: string) => {
-    const configs = {
-      interviewed: { bg: 'bg-pink-100', text: 'text-pink-700', dot: 'bg-pink-500' },
-      hired: { bg: 'bg-green-100', text: 'text-green-700', dot: 'bg-green-500' },
-      qualified: { bg: 'bg-blue-100', text: 'text-blue-700', dot: 'bg-blue-500' }
-    };
-    
-    const config = configs[status as keyof typeof configs];
-    
-    return (
-      <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${config.bg} ${config.text}`}>
-        <span className={`w-2 h-2 rounded-full ${config.dot}`}></span>
-        {status.charAt(0).toUpperCase() + status.slice(1)}
-      </span>
-    );
-  };
-
+const RecruitmentTable: React.FC<RecruitmentTableProps> = ({ data = [] }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
       <div className="p-6 border-b border-gray-100">
@@ -90,37 +27,44 @@ const RecruitmentTable: React.FC = () => {
           <thead>
             <tr className="border-b border-gray-100">
               <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Sr. #</th>
-              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Candidate's Info</th>
-              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Designation</th>
-              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Department</th>
+              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Candidate's Name</th>
+              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Position</th>
+              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Application Date</th>
+              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Interview Date</th>
+              <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Interviewer</th>
               <th className="text-left py-4 px-6 text-sm font-medium text-gray-500">Status</th>
               <th className="text-left py-4 px-6 text-sm font-medium text-gray-500"></th>
             </tr>
           </thead>
           <tbody>
-            {candidates.map((candidate) => (
-              <tr key={candidate.id} className="border-b border-gray-50 hover:bg-gray-50/50">
-                <td className="py-4 px-6 text-sm text-gray-900">{candidate.id}</td>
-                <td className="py-4 px-6">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={candidate.avatar}
-                      alt={candidate.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <span className="text-sm font-medium text-gray-900">{candidate.name}</span>
-                  </div>
-                </td>
-                <td className="py-4 px-6 text-sm text-gray-600">{candidate.designation}</td>
-                <td className="py-4 px-6 text-sm text-gray-600">{candidate.department}</td>
-                <td className="py-4 px-6">{getStatusBadge(candidate.status)}</td>
-                <td className="py-4 px-6">
-                  <button className="text-gray-400 hover:text-gray-600">
-                    <Edit3 className="w-4 h-4" />
-                  </button>
-                </td>
+            {data.length > 0 ? (
+              data.map((item) => (
+                <tr key={item.id} className="border-b border-gray-50 hover:bg-gray-50/50">
+                  <td className="py-4 px-6 text-sm text-gray-900">{item.id}</td>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <span className="text-sm font-medium text-gray-900">{item.name}</span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6 text-sm text-gray-600">{item.position}</td>
+                  <td className="py-4 px-6 text-sm text-gray-600">{item.application}</td>
+                  <td className="py-4 px-6 text-sm text-gray-600">{item.interviewDate}</td>
+                  <td className="py-4 px-6 text-sm text-gray-600">{item.interviewer}</td>
+                  <td className="py-4 px-6">
+                    <StatusBadge status={item.status} customColor={item.statusColor} />
+                  </td>
+                  <td className="py-4 px-6">
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <Edit3 className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={8} className="py-6 text-center text-gray-500">No recruitment data available</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

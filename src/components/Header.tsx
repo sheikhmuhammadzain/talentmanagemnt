@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Download, Plus, Bell, Settings } from 'lucide-react';
+import { userData } from '../config/appConfig';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onThemeChange?: (theme: 'light' | 'dark') => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
+  const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>('light');
+  const [activePage, setActivePage] = useState('recruitment');
+
+  // Navigation items for header
+  const navItems = [
+    { id: 'recruitment', label: 'Recruitment' },
+    { id: 'overview', label: 'Overview' }
+  ];
+
+  // Handle theme change
+  const handleThemeChange = (theme: 'light' | 'dark') => {
+    setActiveTheme(theme);
+    if (onThemeChange) {
+      onThemeChange(theme);
+    }
+  };
+
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         {/* Navigation */}
         <div className="flex items-center gap-6">
           <nav className="flex items-center gap-6">
-            <button className="text-purple-600 font-medium">Recruitment</button>
-            <button className="text-gray-600 hover:text-gray-900">Overview</button>
+            {navItems.map(item => (
+              <button
+                key={item.id}
+                className={`font-medium ${
+                  activePage === item.id ? 'text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                }`}
+                onClick={() => setActivePage(item.id)}
+              >
+                {item.label}
+              </button>
+            ))}
           </nav>
         </div>
 
@@ -17,8 +48,22 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-4">
           {/* Theme Toggle */}
           <div className="flex bg-gray-100 rounded-lg p-1">
-            <button className="px-3 py-1 text-sm text-gray-600 rounded-md">Dark</button>
-            <button className="px-3 py-1 text-sm bg-purple-600 text-white rounded-md">Light</button>
+            <button 
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                activeTheme === 'dark' ? 'bg-purple-600 text-white' : 'text-gray-600'
+              }`}
+              onClick={() => handleThemeChange('dark')}
+            >
+              Dark
+            </button>
+            <button 
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                activeTheme === 'light' ? 'bg-purple-600 text-white' : 'text-gray-600'
+              }`}
+              onClick={() => handleThemeChange('light')}
+            >
+              Light
+            </button>
           </div>
 
           {/* Action Buttons */}
@@ -46,8 +91,8 @@ const Header: React.FC = () => {
 
           {/* User Avatar */}
           <img
-            src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop"
-            alt="User"
+            src={userData.avatar}
+            alt={userData.name}
             className="w-10 h-10 rounded-full object-cover"
           />
         </div>
