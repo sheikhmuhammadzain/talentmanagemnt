@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as LucideIcons from 'lucide-react';
+import { IoCloudDownloadOutline } from "react-icons/io5";
 import StatCard from '../components/StatCard';
 import JobCard from '../components/JobCard';
 import RecruitmentTable from '../components/RecruitmentTable';
@@ -100,9 +101,21 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="p-4">
       {/* Welcome Section */}
-      <div className="mb-4">
-        <h1 className="text-xl font-bold text-gray-900 mb-1">{dashboardConfig.welcomeMessage}</h1>
-        <p className="text-sm text-gray-600">{dashboardConfig.welcomeSubtext}</p>
+      <div className="mb-4 flex justify-between items-center">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900 mb-1">{dashboardConfig.welcomeMessage}</h1>
+          <p className="text-sm text-gray-600">{dashboardConfig.welcomeSubtext}</p>
+        </div>
+        <div className="flex gap-2">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-md text-gray-700">
+            <IoCloudDownloadOutline className="w-4 h-4" />
+            Export
+          </button>
+          <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-md text-gray-700">
+            <LucideIcons.Plus className="w-4 h-4" />
+            Add
+          </button>
+        </div>
       </div>
 
       {/* Stats Grid */}
