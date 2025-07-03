@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, X, Send, RotateCcw, ExternalLink, FileText, ListChecks, Link2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Bot, X, Send, FileText, ListChecks, Link2, ChevronDown, ChevronUp } from 'lucide-react';
 import { getChatResponse } from '../services/chatbotService';
 
 interface Message {
@@ -29,9 +29,9 @@ const ChatBot: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const quickActions = [
-    { text: 'Post a Job', icon: <FileText className="w-5 h-5 text-purple-600" /> },
-    { text: 'Shortlist Candidates', icon: <ListChecks className="w-5 h-5 text-purple-600" /> }, 
-    { text: 'Hire a Candidate', icon: <Link2 className="w-5 h-5 text-purple-600" /> }
+    { text: 'Post a Job', icon: <FileText className="w-4 h-4 text-purple-600" /> },
+    { text: 'Shortlist Candidates', icon: <ListChecks className="w-4 h-4 text-purple-600" /> }, 
+    { text: 'Hire a Candidate', icon: <Link2 className="w-4 h-4 text-purple-600" /> }
   ];
 
   useEffect(() => {
@@ -154,6 +154,33 @@ const ChatBot: React.FC = () => {
     );
   };
 
+  // Format message content to hide content between --- markers when canvas is shown
+  const formatMessageContent = (content: string, showJobDescription: boolean | undefined, canvasVisible: boolean): string => {
+    // If canvas is not visible or message doesn't have job description, show full content
+    if (!canvasVisible || !showJobDescription) {
+      return content;
+    }
+
+    // If canvas is visible and message has job description, hide content between --- markers
+    const regex = /---\s*\n([\s\S]*?)\n\s*---/;
+    const match = content.match(regex);
+    
+    if (match && match.index !== undefined) {
+      // Extract text before and after the job description
+      const beforeJob = content.substring(0, match.index).trim();
+      const afterJob = content.substring(match.index + match[0].length).trim();
+      
+      // Return combined text without the job description
+      if (afterJob) {
+        return beforeJob + "\n\n[Job description visible in side panel]" + "\n\n" + afterJob;
+      } else {
+        return beforeJob + "\n\n[Job description visible in side panel]";
+      }
+    }
+    
+    return content;
+  };
+
   return (
     <>
       {/* Job Description Canvas (Positioned relative to chat window) */}
@@ -243,88 +270,73 @@ const ChatBot: React.FC = () => {
       {/* Chat Bot Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 bg-white hover:bg-gray-50 text-purple-600 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-50 border-2 border-purple-600"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-11 h-11 bg-purple-600 text-white rounded-full shadow-md flex items-center justify-center transition-all duration-200 z-50"
       >
-        <Bot className="w-6 h-6" />
+        <Bot className="w-5 h-5" />
       </button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-72 sm:w-80 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50 overflow-hidden">
+        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-72 sm:w-80 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-md shadow-lg border border-gray-200 flex flex-col z-50 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-3 py-3 flex items-center justify-between rounded-t-2xl">
+          <div className="bg-purple-600 text-white px-4 py-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm">
-                <Bot className="w-4 h-4 text-purple-600" />
-              </div>
-              <h3 className="font-semibold text-white text-sm">Chat bot</h3>
+              <Bot className="w-4 h-4" />
+              <h3 className="font-medium text-white text-sm">HR Assistant</h3>
             </div>
-            <div className="flex items-center gap-1">
-              <button className="p-1.5 hover:bg-white/20 rounded-full transition-colors">
-                <RotateCcw className="w-4 h-4" />
-              </button>
-              <button className="p-1.5 hover:bg-white/20 rounded-full transition-colors">
-                <ExternalLink className="w-4 h-4" />
-              </button>
+            <div className="flex items-center">
               <button 
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+                className="p-1 hover:bg-white/10 rounded transition-colors"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
-            </div>
-          </div>
-
-          {/* General Scenario Bar */}
-          <div className="p-2 bg-white border-b border-gray-200">
-            <div className="p-2 bg-white border border-gray-200 rounded-lg">
-              <p className="text-xs text-gray-700">General Scenario</p>
             </div>
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 bg-gray-50 p-4 overflow-y-auto">
+          <div className="flex-1 bg-gray-50 p-3 overflow-y-auto">
             {messages.map((message, index) => (
-              <div key={index} className="mb-6">
+              <div key={index} className="mb-3">
                 {message.type === 'bot' ? (
-                  <div className="flex items-start gap-3">
-                    <div className="text-xs text-gray-500 font-medium mt-1">
-                      Chat Bot
+                  <div className="flex items-start gap-2 mb-1">
+                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mt-0.5 shrink-0">
+                      <Bot className="w-3.5 h-3.5 text-purple-600" />
                     </div>
-                    <div className="text-xs text-gray-400 mt-1">
-                      {message.timestamp}
+                    <div className="text-xs text-gray-500">
+                      HR Assistant
                     </div>
                   </div>
                 ) : (
-                  <div className="flex justify-end mb-2">
-                    <div className="text-xs text-gray-500 font-medium">
+                  <div className="flex justify-end mb-1">
+                    <div className="text-xs text-gray-500">
                       You
                     </div>
                   </div>
                 )}
                 
-                <div className={`${message.type === 'bot' ? 'text-left' : 'flex justify-end'}`}>
+                <div className={`${message.type === 'bot' ? 'pl-8' : 'flex justify-end'}`}>
                   <div className={`
                     ${message.type === 'bot' 
-                      ? 'bg-white text-gray-800 max-w-[85%]' 
-                      : 'bg-purple-600 text-white max-w-[70%]'
+                      ? 'bg-white text-gray-800 max-w-[90%] border border-gray-100' 
+                      : 'bg-purple-600 text-white max-w-[85%]'
                     } 
-                    rounded-2xl px-4 py-3 shadow-sm
+                    rounded-md px-3 py-2 shadow-sm
                   `}>
                     <p className="text-sm leading-relaxed whitespace-pre-line">
-                      {message.content}
+                      {formatMessageContent(message.content, message.showJobDescription, showCanvas)}
                     </p>
                     
                     {message.showJobDescription && !showCanvas && (
                       <div 
-                        className="mt-3 pt-3 border-t border-gray-200 text-blue-600 text-sm cursor-pointer"
+                        className={`mt-2 pt-2 border-t ${message.type === 'bot' ? 'border-gray-100 text-purple-600' : 'border-purple-500/30 text-white'} text-xs font-medium cursor-pointer`}
                         onClick={() => {
                           setShowCanvas(true);
                           setCurrentJustification(message.justification || null);
                         }}
                       >
-                        <div className="flex items-center gap-1">
-                          <FileText className="w-4 h-4" />
+                        <div className="flex items-center gap-1.5">
+                          <FileText className="w-3.5 h-3.5" />
                           <span>View job description</span>
                         </div>
                       </div>
@@ -334,15 +346,17 @@ const ChatBot: React.FC = () => {
 
                 {/* Quick Actions - only show after first bot message */}
                 {message.type === 'bot' && index === 0 && (
-                  <div className="mt-4 space-y-3">
+                  <div className="mt-3 pl-8 grid grid-cols-1 gap-2">
                     {quickActions.map((action, actionIndex) => (
                       <button
                         key={actionIndex}
                         onClick={() => handleQuickAction(action.text)}
-                        className="w-full flex items-center gap-2 p-2 border border-purple-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 bg-white shadow-sm"
+                        className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md hover:bg-white transition-all bg-gray-50"
                       >
+                        <div className="w-5 h-5 rounded-full bg-purple-50 flex items-center justify-center">
                         {action.icon}
-                        <span className="text-gray-700 text-xs font-medium">{action.text}</span>
+                        </div>
+                        <span className="text-gray-700 text-xs">{action.text}</span>
                       </button>
                     ))}
                   </div>
@@ -352,10 +366,10 @@ const ChatBot: React.FC = () => {
             
             {/* Loading indicator */}
             {isLoading && (
-              <div className="flex justify-center items-center py-3">
-                <div className="w-2 h-2 bg-purple-600 rounded-full mr-1 animate-bounce"></div>
-                <div className="w-2 h-2 bg-purple-600 rounded-full mr-1 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+              <div className="flex pl-8 items-center py-2">
+                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full mr-1 animate-bounce"></div>
+                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full mr-1 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -363,7 +377,7 @@ const ChatBot: React.FC = () => {
 
           {/* Input Field */}
           <div className="p-3 bg-white border-t border-gray-200">
-            <div className="flex items-center gap-2">
+            <div className="flex items-end">
               <textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
@@ -373,17 +387,17 @@ const ChatBot: React.FC = () => {
                     handleSendMessage();
                   }
                 }}
-                placeholder="Message"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 resize-none max-h-20 min-h-[3em]"
+                placeholder="Type your message..."
+                className="flex-1 p-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-purple-400 bg-white resize-none min-h-[4.5em] max-h-[6.5em] overflow-y-auto"
                 rows={3}
                 disabled={isLoading}
               />
               <button 
                 onClick={handleSendMessage}
-                className={`p-2 self-end ${isLoading ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-full transition-colors duration-200`}
+                className={`p-2 ml-2 ${isLoading ? 'bg-purple-400' : 'bg-purple-600'} text-white rounded-md`}
                 disabled={isLoading}
               >
-                <Send className="w-3 h-3" />
+                <Send className="w-4 h-4" />
               </button>
             </div>
           </div>
