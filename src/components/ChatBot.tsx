@@ -117,12 +117,49 @@ const ChatBot: React.FC = () => {
     setShowCanvas(false);
   };
 
+  // Format justification text to properly display markdown-like syntax
+  const formatJustification = (text: string | null): React.ReactNode => {
+    if (!text) return null;
+    
+    // Replace the heading and trim whitespace
+    const formattedText = text.replace(/===== Justification =====/g, '').trim();
+    
+    // Regex to match numbered points with markdown bold
+    const pointRegex = /(\d+)\.\s+\*\*([^*]+)\*\*:?\s+(.*?)(?=\s+\d+\.\s+\*\*|$)/gs;
+    
+    // Extract all matches
+    const matches = [...formattedText.matchAll(pointRegex)];
+    
+    if (matches.length === 0) {
+      // Fallback if regex doesn't match
+      return <div className="whitespace-pre-wrap text-xs">{text}</div>;
+    }
+    
+    return (
+      <div className="space-y-2">
+        <h4 className="font-medium text-xs text-purple-700 border-b border-purple-100 pb-1 mb-2">Justification</h4>
+        {matches.map((match, index) => {
+          const [, number, title, content] = match;
+          return (
+            <div key={index} className="mb-2">
+              <div className="flex items-start gap-1">
+                <span className="text-purple-600 font-medium">{number}.</span>
+                <span className="font-medium text-gray-800">{title}:</span>
+              </div>
+              <p className="ml-4 text-gray-600 mt-0.5">{content.trim()}</p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <>
       {/* Job Description Canvas (Positioned relative to chat window) */}
       {showCanvas && isOpen && (
-        <div className="fixed bottom-20 right-[26rem] sm:bottom-24 sm:right-[26rem] w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[500px] sm:h-[600px] max-h-[calc(100vh-8rem)] bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col z-40 overflow-hidden">
-          <div className="bg-white p-3 border-b border-gray-200 flex justify-between items-center">
+        <div className="fixed bottom-20 right-[20rem] sm:bottom-24 sm:right-[22rem] w-64 sm:w-72 max-w-[calc(100vw-2rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col z-40 overflow-hidden">
+          <div className="bg-white p-2 border-b border-gray-200 flex justify-between items-center">
             <h3 className="font-medium text-sm text-gray-800">Job Description</h3>
             <button
               onClick={handleCloseCanvas}
@@ -153,8 +190,8 @@ const ChatBot: React.FC = () => {
               {showReasoning && (
                 <>
                   {currentJustification ? (
-                    <div className="text-xs text-gray-700 bg-gray-50 p-3 mb-3 rounded border border-gray-100">
-                      {currentJustification}
+                    <div className="text-xs text-gray-700 bg-gray-50 p-3 mb-3 rounded border border-gray-100 overflow-y-auto max-h-48">
+                      {formatJustification(currentJustification)}
                     </div>
                   ) : (
                     <div className="text-xs text-gray-500 italic mb-3">No reasoning available</div>
@@ -206,42 +243,42 @@ const ChatBot: React.FC = () => {
       {/* Chat Bot Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-14 h-14 bg-white hover:bg-gray-50 text-purple-600 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-50 border-2 border-purple-600"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-12 h-12 bg-white hover:bg-gray-50 text-purple-600 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-50 border-2 border-purple-600"
       >
-        <Bot className="w-8 h-8" />
+        <Bot className="w-6 h-6" />
       </button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-80 sm:w-96 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] h-[500px] sm:h-[600px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50 overflow-hidden">
+        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-72 sm:w-80 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col z-50 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-4 flex items-center justify-between rounded-t-2xl">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm">
-                <Bot className="w-5 h-5 text-purple-600" />
+          <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-3 py-3 flex items-center justify-between rounded-t-2xl">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm">
+                <Bot className="w-4 h-4 text-purple-600" />
               </div>
-              <h3 className="font-semibold text-white">Chat bot</h3>
+              <h3 className="font-semibold text-white text-sm">Chat bot</h3>
             </div>
             <div className="flex items-center gap-1">
-              <button className="p-2 hover:bg-white/20 rounded-full transition-colors">
-                <RotateCcw className="w-5 h-5" />
+              <button className="p-1.5 hover:bg-white/20 rounded-full transition-colors">
+                <RotateCcw className="w-4 h-4" />
               </button>
-              <button className="p-2 hover:bg-white/20 rounded-full transition-colors">
-                <ExternalLink className="w-5 h-5" />
+              <button className="p-1.5 hover:bg-white/20 rounded-full transition-colors">
+                <ExternalLink className="w-4 h-4" />
               </button>
               <button 
                 onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
 
           {/* General Scenario Bar */}
-          <div className="p-4 bg-white border-b border-gray-200">
-            <div className="p-3 bg-white border border-gray-200 rounded-lg">
-              <p className="text-sm text-gray-700">General Scenario</p>
+          <div className="p-2 bg-white border-b border-gray-200">
+            <div className="p-2 bg-white border border-gray-200 rounded-lg">
+              <p className="text-xs text-gray-700">General Scenario</p>
             </div>
           </div>
 
@@ -302,10 +339,10 @@ const ChatBot: React.FC = () => {
                       <button
                         key={actionIndex}
                         onClick={() => handleQuickAction(action.text)}
-                        className="w-full flex items-center gap-4 p-3 border border-purple-200 rounded-xl hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 bg-white shadow-sm"
+                        className="w-full flex items-center gap-2 p-2 border border-purple-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-all duration-200 bg-white shadow-sm"
                       >
                         {action.icon}
-                        <span className="text-gray-700 text-sm font-medium">{action.text}</span>
+                        <span className="text-gray-700 text-xs font-medium">{action.text}</span>
                       </button>
                     ))}
                   </div>
@@ -325,23 +362,28 @@ const ChatBot: React.FC = () => {
           </div>
 
           {/* Input Field */}
-          <div className="p-4 bg-white border-t border-gray-200">
-            <div className="flex items-center gap-3">
-              <input
-                type="text"
+          <div className="p-3 bg-white border-t border-gray-200">
+            <div className="flex items-center gap-2">
+              <textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
                 placeholder="Message"
-                className="flex-1 px-4 py-3 border border-gray-300 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-gray-50 resize-none max-h-20 min-h-[3em]"
+                rows={3}
                 disabled={isLoading}
               />
               <button 
                 onClick={handleSendMessage}
-                className={`p-3 ${isLoading ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-full transition-colors duration-200`}
+                className={`p-2 self-end ${isLoading ? 'bg-purple-400' : 'bg-purple-600 hover:bg-purple-700'} text-white rounded-full transition-colors duration-200`}
                 disabled={isLoading}
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3 h-3" />
               </button>
             </div>
           </div>
