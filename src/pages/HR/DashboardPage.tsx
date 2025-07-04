@@ -120,7 +120,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' }) => {
         <div className="flex gap-2">
           <button className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md ${
             theme === 'dark' 
-              ? 'border border-dark-hover text-dark-text hover:bg-dark-hover' 
+              ? 'border border-dark-border text-dark-text hover:bg-dark-hover' 
               : 'border border-gray-200 text-gray-700'
           }`}>
             <IoCloudDownloadOutline className="w-4 h-4" />
@@ -128,7 +128,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' }) => {
           </button>
           <button className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md ${
             theme === 'dark' 
-              ? 'border border-dark-hover text-dark-text hover:bg-dark-hover' 
+              ? 'border border-dark-border text-dark-text hover:bg-dark-hover' 
               : 'border border-gray-200 text-gray-700'
           }`}>
             <LucideIcons.Plus className="w-4 h-4" />

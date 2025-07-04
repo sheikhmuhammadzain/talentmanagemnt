@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange, theme = 'light' }) => {
   return (
     <header className={`px-4 py-2 border-b ${
       theme === 'dark' 
-        ? 'bg-dark-surface border-dark-hover' 
+        ? 'bg-dark-card border-dark-border' 
         : 'bg-white border-gray-200'
     }`}>
       <div className="flex items-center justify-between">
@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange, theme = 'light' }) => {
         <div className="flex items-center gap-3">
           {/* Theme Toggle */}
           <div className={`flex rounded-lg p-0.5 ${
-            theme === 'dark' ? 'bg-dark-surface' : 'bg-gray-100'
+            theme === 'dark' ? 'bg-dark-background' : 'bg-gray-100'
           }`}>
             <button 
               className={`px-2 py-1 text-xs rounded-md transition-colors ${

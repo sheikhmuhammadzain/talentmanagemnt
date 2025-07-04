@@ -4,7 +4,7 @@ import { getRouteComponent } from './routes';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
   // Get the component for the current route
   const CurrentPage = getRouteComponent(activeTab);

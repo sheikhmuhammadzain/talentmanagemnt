@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
   return (
     <div className={`${collapsed ? 'w-16' : 'w-64'} h-screen flex flex-col transition-all duration-300 relative ${
       theme === 'dark' 
-        ? 'bg-dark-surface border-r border-dark-hover' 
+        ? 'bg-dark-card border-r border-dark-border' 
         : 'bg-white border-r border-gray-200'
     }`}>
       {/* Collapse Button */}
@@ -47,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
       
       {/* Header */}
       <div className={`p-4 ${
-        theme === 'dark' ? 'border-b border-dark-hover' : 'border-b border-gray-200'
+        theme === 'dark' ? 'border-b border-dark-border' : 'border-b border-gray-200'
       } ${collapsed ? 'flex justify-center' : ''}`}>
         {!collapsed && (
           <div className={`flex rounded-lg p-1 mb-3 ${
@@ -77,14 +77,14 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
         <div className="p-4">
           <div className="relative">
             <LucideIcons.Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
-              theme === 'dark' ? 'text-dark-text' : 'text-gray-400'
+              theme === 'dark' ? 'text-gray-400' : 'text-gray-400'
             }`} />
             <input
               type="text"
               placeholder="Search"
               className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-dark-accent focus:border-transparent ${
                 theme === 'dark'
-                  ? 'bg-dark-hover border border-dark-hover text-dark-text placeholder-gray-500'
+                  ? 'bg-dark-hover border border-dark-border text-dark-text placeholder-gray-500'
                   : 'bg-white border border-gray-200 text-gray-900'
               }`}
             />
@@ -101,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+              className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors mb-1 ${
                 isActive 
                   ? 'bg-dark-accent text-white' 
                   : theme === 'dark'
@@ -119,7 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
 
       {/* User Profile */}
       <div className={`p-4 ${
-        theme === 'dark' ? 'border-t border-dark-hover' : 'border-t border-gray-200'
+        theme === 'dark' ? 'border-t border-dark-border' : 'border-t border-gray-200'
       } ${collapsed ? 'flex justify-center' : ''}`}>
         {collapsed ? (
           <img

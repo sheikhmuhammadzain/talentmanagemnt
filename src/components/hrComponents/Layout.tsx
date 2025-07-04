@@ -26,11 +26,11 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, them
     setTheme(newTheme);
     // Apply theme changes to the entire app
     if (newTheme === 'dark') {
-      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.add('dark');
       document.body.style.backgroundColor = '#0c111d';
       document.body.style.color = '#f5f5f6';
     } else {
-      document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.remove('dark');
       document.body.style.backgroundColor = '';
       document.body.style.color = '';
     }

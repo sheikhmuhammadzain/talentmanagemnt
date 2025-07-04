@@ -191,11 +191,11 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
       {showCanvas && isOpen && (
         <div className={`fixed bottom-20 right-[26rem] w-72 h-[500px] rounded-lg shadow-xl flex flex-col z-40 overflow-hidden ${
           theme === 'dark' 
-            ? 'bg-dark-surface border border-dark-hover' 
+            ? 'bg-dark-card border border-dark-border' 
             : 'bg-white border border-gray-200'
         }`}>
           <div className={`p-2 border-b flex justify-between items-center ${
-            theme === 'dark' ? 'bg-dark-surface border-dark-hover' : 'bg-white border-gray-200'
+            theme === 'dark' ? 'bg-dark-card border-dark-border' : 'bg-white border-gray-200'
           }`}>
             <h3 className={`font-medium text-sm ${
               theme === 'dark' ? 'text-dark-text' : 'text-gray-800'
@@ -214,7 +214,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
 
           <div className="p-4 overflow-y-auto flex-1">
             <div className={`rounded-lg p-2 ${
-              theme === 'dark' ? 'bg-dark-surface' : 'bg-white'
+              theme === 'dark' ? 'bg-dark-card' : 'bg-white'
             }`}>
               {/* Job Description Content */}
               <div 
@@ -322,12 +322,12 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
       {isOpen && (
         <div className={`fixed bottom-20 right-6 w-80 sm:w-96 h-[500px] max-h-[80vh] ${
           theme === 'dark' 
-            ? 'bg-dark-surface border border-dark-hover' 
+            ? 'bg-dark-card border border-dark-border' 
             : 'bg-white border border-gray-200'
         } rounded-lg shadow-xl flex flex-col z-40`}>
           {/* Chat Header */}
           <div className={`p-3 border-b flex justify-between items-center ${
-            theme === 'dark' ? 'border-dark-hover' : 'border-gray-200'
+            theme === 'dark' ? 'border-dark-border' : 'border-gray-200'
           }`}>
             <div className="flex items-center gap-2">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -371,7 +371,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
                     onClick={() => handleQuickAction(action.text)}
                     className={`flex items-center gap-2 p-3 rounded-lg text-sm text-left transition-colors ${
                       theme === 'dark'
-                        ? 'bg-dark-surface hover:bg-dark-hover text-dark-text'
+                        ? 'bg-dark-card hover:bg-dark-hover text-dark-text'
                         : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
                     }`}
                   >
@@ -395,7 +395,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
                 <div className={`max-w-[85%] ${
                   message.type === 'user'
                     ? theme === 'dark' ? 'bg-dark-accent text-white' : 'bg-purple-600 text-white'
-                    : theme === 'dark' ? 'bg-dark-surface text-dark-text' : 'bg-white text-gray-700'
+                    : theme === 'dark' ? 'bg-dark-card text-dark-text' : 'bg-white text-gray-700'
                 } p-3 rounded-lg ${
                   message.type === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'
                 } ${
@@ -419,7 +419,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
             {isLoading && (
               <div className="flex items-start mb-4">
                 <div className={`p-3 rounded-lg rounded-tl-none max-w-[85%] ${
-                  theme === 'dark' ? 'bg-dark-surface text-dark-text' : 'bg-white text-gray-700 shadow-sm'
+                  theme === 'dark' ? 'bg-dark-card text-dark-text' : 'bg-white text-gray-700 shadow-sm'
                 }`}>
                   <div className="flex items-center gap-1">
                     <div className={`w-2 h-2 rounded-full ${
@@ -442,7 +442,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
 
           {/* Input Area - Change to textarea */}
           <div className={`p-3 border-t ${
-            theme === 'dark' ? 'border-dark-hover bg-dark-surface' : 'border-gray-200 bg-white'
+            theme === 'dark' ? 'border-dark-border bg-dark-card' : 'border-gray-200 bg-white'
           }`}>
             <div className="relative">
               <textarea

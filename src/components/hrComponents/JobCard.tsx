@@ -43,7 +43,7 @@ const JobCard: React.FC<JobCardProps> = ({
   const cardBg = isHovered 
     ? `${bgColor} text-white` 
     : theme === 'dark' 
-      ? 'bg-dark-surface text-dark-text' 
+      ? 'bg-dark-card text-dark-text' 
       : 'bg-white text-gray-900';
   
   const iconBg = `${bgColor} w-14 h-14 rounded-xl flex items-center justify-center mb-3`;
@@ -73,7 +73,7 @@ const JobCard: React.FC<JobCardProps> = ({
       : 'hover:bg-gray-100';
 
   const borderClass = theme === 'dark' && !isHovered 
-    ? 'border-dark-hover' 
+    ? 'border-dark-border' 
     : 'border-gray-100';
 
   return (

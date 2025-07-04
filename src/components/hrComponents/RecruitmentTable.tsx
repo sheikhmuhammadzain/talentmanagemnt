@@ -12,11 +12,11 @@ const RecruitmentTable: React.FC<RecruitmentTableProps> = ({ data = [], theme = 
   return (
     <div className={`rounded-xl shadow-sm ${
       theme === 'dark'
-        ? 'bg-dark-surface border border-dark-hover'
+        ? 'bg-dark-card border border-dark-border'
         : 'bg-white border border-gray-100'
     }`}>
       <div className={`p-4 border-b ${
-        theme === 'dark' ? 'border-dark-hover' : 'border-gray-100'
+        theme === 'dark' ? 'border-dark-border' : 'border-gray-100'
       }`}>
         <div className="flex items-center justify-between">
           <h2 className={`text-lg font-medium ${
@@ -39,7 +39,7 @@ const RecruitmentTable: React.FC<RecruitmentTableProps> = ({ data = [], theme = 
         <table className="w-full">
           <thead>
             <tr className={`border-b ${
-              theme === 'dark' ? 'border-dark-hover' : 'border-gray-100'
+              theme === 'dark' ? 'border-dark-border' : 'border-gray-100'
             }`}>
               <th className={`text-left whitespace-nowrap py-3 px-4 text-xs font-medium ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
@@ -72,7 +72,7 @@ const RecruitmentTable: React.FC<RecruitmentTableProps> = ({ data = [], theme = 
               data.map((item) => (
                 <tr key={item.id} className={`border-b ${
                   theme === 'dark' 
-                    ? 'border-dark-hover hover:bg-dark-hover/30' 
+                    ? 'border-dark-border hover:bg-dark-hover/30' 
                     : 'border-gray-50 hover:bg-gray-50/50'
                 }`}>
                   <td className={`py-3 px-4 text-xs ${
@@ -120,20 +120,20 @@ const RecruitmentTable: React.FC<RecruitmentTableProps> = ({ data = [], theme = 
 
       {/* Pagination */}
       <div className={`p-3 border-t ${
-        theme === 'dark' ? 'border-dark-hover' : 'border-gray-100'
+        theme === 'dark' ? 'border-dark-border' : 'border-gray-100'
       }`}>
         <div className="flex items-center justify-center">
           <div className="flex items-center gap-1">
             <button className={`p-1 rounded-md ${
               theme === 'dark' 
-                ? 'border border-dark-hover hover:bg-dark-hover text-dark-text' 
+                ? 'border border-dark-border hover:bg-dark-hover text-dark-text' 
                 : 'border border-gray-300 hover:bg-gray-50'
             }`}>
               <ChevronLeft className="w-3 h-3" />
             </button>
             <button className={`p-1 rounded-md ${
               theme === 'dark' 
-                ? 'border border-dark-hover hover:bg-dark-hover text-dark-text' 
+                ? 'border border-dark-border hover:bg-dark-hover text-dark-text' 
                 : 'border border-gray-300 hover:bg-gray-50'
             }`}>
               <ChevronRight className="w-3 h-3" />
