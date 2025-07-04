@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Clock, ExternalLink, Filter } from 'lucide-react';
-import { Job, getAllJobs, getJobsByDepartment } from '../services/recruitmentService';
-import TabNavigation from '../components/TabNavigation';
-import { recruitmentTabs, departments } from '../config/appConfig';
+import { Job, getAllJobs, getJobsByDepartment } from '../../services/recruitmentService';
+import TabNavigation from '../../components/hrComponents/TabNavigation';
+import { recruitmentTabs, departments } from '../../config/appConfig';
 
-const RecruitmentPage: React.FC = () => {
+interface RecruitmentPageProps {
+  theme?: 'light' | 'dark';
+}
+
+const RecruitmentPage: React.FC<RecruitmentPageProps> = ({ theme = 'light' }) => {
   const [activeTab, setActiveTab] = useState('open-positions');
   const [activeDepartment, setActiveDepartment] = useState('view-all');
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -39,7 +43,11 @@ const RecruitmentPage: React.FC = () => {
 
   // Filter button component for the right side of tabs
   const FilterButton = () => (
-    <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
+    <button className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+      theme === 'dark' 
+        ? 'border border-dark-hover text-dark-text hover:bg-dark-hover' 
+        : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+    }`}>
       <Filter className="w-4 h-4" />
       Filter
     </button>
@@ -53,6 +61,7 @@ const RecruitmentPage: React.FC = () => {
         activeTab={activeTab}
         onTabChange={handleTabChange}
         rightContent={<FilterButton />}
+        theme={theme}
       />
 
       {/* Department Filters */}
@@ -63,8 +72,10 @@ const RecruitmentPage: React.FC = () => {
             onClick={() => handleDepartmentChange(dept.id)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
               activeDepartment === dept.id
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                ? 'bg-dark-accent text-white'
+                : theme === 'dark'
+                  ? 'bg-dark-hover text-dark-text hover:bg-dark-background'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
             {dept.label}
@@ -75,10 +86,16 @@ const RecruitmentPage: React.FC = () => {
       {/* Job Listings */}
       <div className="space-y-6">
         {loading ? (
-          <div className="text-center py-8">Loading jobs...</div>
+          <div className={`text-center py-8 ${
+            theme === 'dark' ? 'text-dark-text' : ''
+          }`}>Loading jobs...</div>
         ) : jobs.length > 0 ? (
           jobs.map((job) => (
-            <div key={job.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-shadow">
+            <div key={job.id} className={`rounded-2xl p-6 transition-shadow ${
+              theme === 'dark'
+                ? 'bg-dark-surface border border-dark-hover hover:shadow-md'
+                : 'bg-white border border-gray-100 hover:shadow-md'
+            }`}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -90,15 +107,21 @@ const RecruitmentPage: React.FC = () => {
                   </div>
                   
                   <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
+                    <h3 className={`text-xl font-semibold ${
+                      theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+                    }`}>{job.title}</h3>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${job.categoryColor}`}>
                       ● {job.category}
                     </span>
                   </div>
                   
-                  <p className="text-gray-600 mb-4">{job.description}</p>
+                  <p className={`mb-4 ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+                  }`}>{job.description}</p>
                   
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
+                  <div className={`flex items-center gap-4 text-sm ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
                     <div className="flex items-center gap-1">
                       <MapPin className="w-4 h-4" />
                       {job.location}
@@ -113,7 +136,9 @@ const RecruitmentPage: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="text-center py-8">No jobs found in this department.</div>
+          <div className={`text-center py-8 ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+          }`}>No jobs found in this department.</div>
         )}
       </div>
     </div>

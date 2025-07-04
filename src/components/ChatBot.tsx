@@ -11,7 +11,11 @@ interface Message {
   justification?: string | null;
 }
 
-const ChatBot: React.FC = () => {
+interface ChatBotProps {
+  theme?: 'light' | 'dark';
+}
+
+const ChatBot: React.FC<ChatBotProps> = ({ theme = 'light' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -185,31 +189,57 @@ const ChatBot: React.FC = () => {
     <>
       {/* Job Description Canvas (Positioned relative to chat window) */}
       {showCanvas && isOpen && (
-        <div className="fixed bottom-20 right-[20rem] sm:bottom-24 sm:right-[22rem] w-64 sm:w-72 max-w-[calc(100vw-2rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-lg shadow-xl border border-gray-200 flex flex-col z-40 overflow-hidden">
-          <div className="bg-white p-2 border-b border-gray-200 flex justify-between items-center">
-            <h3 className="font-medium text-sm text-gray-800">Job Description</h3>
+        <div className={`fixed bottom-20 right-[26rem] w-72 h-[500px] rounded-lg shadow-xl flex flex-col z-40 overflow-hidden ${
+          theme === 'dark' 
+            ? 'bg-dark-surface border border-dark-hover' 
+            : 'bg-white border border-gray-200'
+        }`}>
+          <div className={`p-2 border-b flex justify-between items-center ${
+            theme === 'dark' ? 'bg-dark-surface border-dark-hover' : 'bg-white border-gray-200'
+          }`}>
+            <h3 className={`font-medium text-sm ${
+              theme === 'dark' ? 'text-dark-text' : 'text-gray-800'
+            }`}>Job Description</h3>
             <button
               onClick={handleCloseCanvas}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
+              className={`p-1 rounded transition-colors ${
+                theme === 'dark' ? 'hover:bg-dark-hover' : 'hover:bg-gray-100'
+              }`}
             >
-              <X className="w-4 h-4 text-gray-600" />
+              <X className={`w-4 h-4 ${
+                theme === 'dark' ? 'text-dark-text' : 'text-gray-600'
+              }`} />
             </button>
           </div>
 
           <div className="p-4 overflow-y-auto flex-1">
-            <div className="bg-white rounded-lg p-2">
+            <div className={`rounded-lg p-2 ${
+              theme === 'dark' ? 'bg-dark-surface' : 'bg-white'
+            }`}>
               {/* Job Description Content */}
               <div 
-                className="flex items-center gap-2 mb-2 cursor-pointer hover:bg-gray-50 p-1 rounded"
+                className={`flex items-center gap-2 mb-2 cursor-pointer p-1 rounded ${
+                  theme === 'dark' ? 'hover:bg-dark-hover' : 'hover:bg-gray-50'
+                }`}
                 onClick={() => setShowReasoning(!showReasoning)}
               >
-                <div className="h-4 w-4 bg-purple-100 rounded-full flex items-center justify-center">
-                  <div className="h-2 w-2 bg-purple-600 rounded-full"></div>
+                <div className={`h-4 w-4 ${
+                  theme === 'dark' ? 'bg-dark-accent/20' : 'bg-purple-100'
+                } rounded-full flex items-center justify-center`}>
+                  <div className={`h-2 w-2 ${
+                    theme === 'dark' ? 'bg-dark-accent' : 'bg-purple-600'
+                  } rounded-full`}></div>
                 </div>
-                <span className="text-xs text-gray-500">Reasoning and Scanning</span>
+                <span className={`text-xs ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}>Reasoning and Scanning</span>
                 {showReasoning ? 
-                  <ChevronUp className="w-3 h-3 text-gray-500 ml-auto" /> : 
-                  <ChevronDown className="w-3 h-3 text-gray-500 ml-auto" />
+                  <ChevronUp className={`w-3 h-3 ml-auto ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`} /> : 
+                  <ChevronDown className={`w-3 h-3 ml-auto ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                  }`} />
                 }
               </div>
               
@@ -217,185 +247,234 @@ const ChatBot: React.FC = () => {
               {showReasoning && (
                 <>
                   {currentJustification ? (
-                    <div className="text-xs text-gray-700 bg-gray-50 p-3 mb-3 rounded border border-gray-100 overflow-y-auto max-h-48">
+                    <div className={`text-xs p-3 mb-3 rounded border overflow-y-auto max-h-48 ${
+                      theme === 'dark' 
+                        ? 'bg-dark-hover border-dark-hover text-dark-text' 
+                        : 'bg-gray-50 border-gray-100 text-gray-700'
+                    }`}>
                       {formatJustification(currentJustification)}
                     </div>
                   ) : (
-                    <div className="text-xs text-gray-500 italic mb-3">No reasoning available</div>
+                    <div className={`text-xs italic mb-3 ${
+                      theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                    }`}>No reasoning available</div>
                   )}
                 </>
               )}
 
               <div className="space-y-3 mt-3">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">Job Title: UI/UX Designer</h3>
-                  <p className="text-xs text-gray-700 mt-1">Location: Faisalabad, Pakistan (On-Site)</p>
-                  <p className="text-xs text-gray-700">Employment Type: Full-Time</p>
-                  <p className="text-xs text-gray-700">Salary: Rs. 50,000 per month</p>
+                  <h3 className={`text-sm font-medium ${
+                    theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+                  }`}>Job Title: UI/UX Designer</h3>
+                  <p className={`text-xs mt-1 ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-700'
+                  }`}>Location: Faisalabad, Pakistan (On-Site)</p>
+                  <p className={`text-xs ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-700'
+                  }`}>Employment Type: Full-Time</p>
+                  <p className={`text-xs ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-700'
+                  }`}>Salary: Rs. 50,000 per month</p>
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-medium text-gray-900">Job Summary:</h3>
-                  <p className="text-xs text-gray-700 mt-1">
+                  <h3 className={`text-xs font-medium ${
+                    theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+                  }`}>Job Summary:</h3>
+                  <p className={`text-xs mt-1 ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-700'
+                  }`}>
                     My Company is looking for a creative and detail-oriented UI/UX Designer to join our team in Faisalabad. The ideal candidate will be responsible for designing intuitive and visually appealing user interfaces for web and mobile applications.
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-xs font-medium text-gray-900">Key Responsibilities:</h3>
-                  <ul className="list-disc pl-4 mt-1 text-xs text-gray-700 space-y-0.5">
+                  <h3 className={`text-xs font-medium ${
+                    theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+                  }`}>Key Responsibilities:</h3>
+                  <ul className={`list-disc pl-4 mt-1 text-xs space-y-0.5 ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-gray-700'
+                  }`}>
                     <li>Design wireframes, prototypes, and high-fidelity UI designs</li>
                     <li>Conduct user research, usability testing, and competitor analysis</li>
                     <li>Create and maintain design systems, style guides, and UI components</li>
                     <li>Collaborate closely with developers</li>
                   </ul>
                 </div>
-
-                <div>
-                  <h3 className="text-xs font-medium text-gray-900">Required Skills:</h3>
-                  <ul className="list-disc pl-4 mt-1 text-xs text-gray-700 space-y-0.5">
-                    <li>2+ years of experience in UI/UX design</li>
-                    <li>Proficiency in Figma & Adobe XD</li>
-                    <li>Strong understanding of user-centered design principles</li>
-                  </ul>
-                </div>
-
-                <p className="text-xs text-gray-500 italic">Application Deadline: July 30, 2023</p>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Chat Bot Toggle Button */}
+      {/* Chat Button (Fixed Position) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-11 h-11 bg-purple-600 text-white rounded-full shadow-md flex items-center justify-center transition-all duration-200 z-50"
+        className={`fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-50 ${
+          theme === 'dark' ? 'bg-dark-accent text-white' : 'bg-purple-600 text-white'
+        }`}
       >
-        <Bot className="w-5 h-5" />
+        {isOpen ? <X className="w-6 h-6" /> : <Bot className="w-6 h-6" />}
       </button>
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 sm:bottom-24 sm:right-6 w-72 sm:w-80 max-w-[calc(100vw-2rem)] sm:max-w-[calc(100vw-3rem)] h-[400px] sm:h-[450px] max-h-[calc(100vh-8rem)] bg-white rounded-md shadow-lg border border-gray-200 flex flex-col z-50 overflow-hidden">
-          {/* Header */}
-          <div className="bg-purple-600 text-white px-4 py-2.5 flex items-center justify-between">
+        <div className={`fixed bottom-20 right-6 w-80 sm:w-96 h-[500px] max-h-[80vh] ${
+          theme === 'dark' 
+            ? 'bg-dark-surface border border-dark-hover' 
+            : 'bg-white border border-gray-200'
+        } rounded-lg shadow-xl flex flex-col z-40`}>
+          {/* Chat Header */}
+          <div className={`p-3 border-b flex justify-between items-center ${
+            theme === 'dark' ? 'border-dark-hover' : 'border-gray-200'
+          }`}>
             <div className="flex items-center gap-2">
-              <Bot className="w-4 h-4" />
-              <h3 className="font-medium text-white text-sm">HR Assistant</h3>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                theme === 'dark' ? 'bg-dark-accent/20' : 'bg-purple-100'
+              }`}>
+                <Bot className={`w-4 h-4 ${
+                  theme === 'dark' ? 'text-dark-accent' : 'text-purple-600'
+                }`} />
+              </div>
+              <div>
+                <h3 className={`font-medium text-sm ${
+                  theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+                }`}>HR Assistant</h3>
+                <p className={`text-[10px] ${
+                  theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
+                }`}>Online</p>
+              </div>
             </div>
-            <div className="flex items-center">
-              <button 
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-white/10 rounded transition-colors"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
+            <button 
+              onClick={() => setIsOpen(false)}
+              className={`p-1 rounded ${
+                theme === 'dark' ? 'hover:bg-dark-hover' : 'hover:bg-gray-100'
+              }`}
+            >
+              <X className={`w-4 h-4 ${
+                theme === 'dark' ? 'text-dark-text' : 'text-gray-500'
+              }`} />
+            </button>
           </div>
 
           {/* Messages Container */}
-          <div className="flex-1 bg-gray-50 p-3 overflow-y-auto">
-            {messages.map((message, index) => (
-              <div key={index} className="mb-3">
-                {message.type === 'bot' ? (
-                  <div className="flex items-start gap-2 mb-1">
-                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center mt-0.5 shrink-0">
-                      <Bot className="w-3.5 h-3.5 text-purple-600" />
+          <div className={`flex-1 p-4 overflow-y-auto ${
+            theme === 'dark' ? 'bg-dark-background' : 'bg-gray-50'
+          }`}>
+            {/* Quick Actions (shown at start) */}
+            {messages.length === 1 && (
+              <div className="grid grid-cols-1 gap-2 my-4">
+                {quickActions.map((action, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleQuickAction(action.text)}
+                    className={`flex items-center gap-2 p-3 rounded-lg text-sm text-left transition-colors ${
+                      theme === 'dark'
+                        ? 'bg-dark-surface hover:bg-dark-hover text-dark-text'
+                        : 'bg-white hover:bg-gray-100 text-gray-700 border border-gray-200'
+                    }`}
+                  >
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                      theme === 'dark' ? 'bg-dark-accent/20' : 'bg-purple-100'
+                    }`}>
+                      {action.icon}
                     </div>
-                    <div className="text-xs text-gray-500">
-                      HR Assistant
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex justify-end mb-1">
-                    <div className="text-xs text-gray-500">
-                      You
-                    </div>
-                  </div>
-                )}
-                
-                <div className={`${message.type === 'bot' ? 'pl-8' : 'flex justify-end'}`}>
-                  <div className={`
-                    ${message.type === 'bot' 
-                      ? 'bg-white text-gray-800 max-w-[90%] border border-gray-100' 
-                      : 'bg-purple-600 text-white max-w-[85%]'
-                    } 
-                    rounded-md px-3 py-2 shadow-sm
-                  `}>
-                    <p className="text-sm leading-relaxed whitespace-pre-line">
-                      {formatMessageContent(message.content, message.showJobDescription, showCanvas)}
-                    </p>
-                    
-                    {message.showJobDescription && !showCanvas && (
-                      <div 
-                        className={`mt-2 pt-2 border-t ${message.type === 'bot' ? 'border-gray-100 text-purple-600' : 'border-purple-500/30 text-white'} text-xs font-medium cursor-pointer`}
-                        onClick={() => {
-                          setShowCanvas(true);
-                          setCurrentJustification(message.justification || null);
-                        }}
-                      >
-                        <div className="flex items-center gap-1.5">
-                          <FileText className="w-3.5 h-3.5" />
-                          <span>View job description</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Quick Actions - only show after first bot message */}
-                {message.type === 'bot' && index === 0 && (
-                  <div className="mt-3 pl-8 grid grid-cols-1 gap-2">
-                    {quickActions.map((action, actionIndex) => (
-                      <button
-                        key={actionIndex}
-                        onClick={() => handleQuickAction(action.text)}
-                        className="flex items-center gap-2 px-3 py-2 border border-gray-200 rounded-md hover:bg-white transition-all bg-gray-50"
-                      >
-                        <div className="w-5 h-5 rounded-full bg-purple-50 flex items-center justify-center">
-                        {action.icon}
-                        </div>
-                        <span className="text-gray-700 text-xs">{action.text}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            
-            {/* Loading indicator */}
-            {isLoading && (
-              <div className="flex pl-8 items-center py-2">
-                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full mr-1 animate-bounce"></div>
-                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full mr-1 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                <div className="w-1.5 h-1.5 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    {action.text}
+                  </button>
+                ))}
               </div>
             )}
+
+            {/* Messages */}
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`mb-4 ${message.type === 'user' ? 'flex flex-row-reverse' : ''}`}
+              >
+                <div className={`max-w-[85%] ${
+                  message.type === 'user'
+                    ? theme === 'dark' ? 'bg-dark-accent text-white' : 'bg-purple-600 text-white'
+                    : theme === 'dark' ? 'bg-dark-surface text-dark-text' : 'bg-white text-gray-700'
+                } p-3 rounded-lg ${
+                  message.type === 'user' ? 'rounded-tr-none' : 'rounded-tl-none'
+                } ${
+                  theme === 'dark' && message.type !== 'user' ? '' : message.type !== 'user' ? 'shadow-sm' : ''
+                }`}>
+                  <div className="whitespace-pre-wrap text-[14px]">
+                    {formatMessageContent(message.content, message.showJobDescription, showCanvas)}
+                  </div>
+                  <div className={`text-[10px] mt-1 text-right ${
+                    message.type === 'user'
+                      ? 'text-purple-100'
+                      : theme === 'dark' ? 'text-gray-400' : 'text-gray-400'
+                  }`}>
+                    {message.timestamp}
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Loading indicator */}
+            {isLoading && (
+              <div className="flex items-start mb-4">
+                <div className={`p-3 rounded-lg rounded-tl-none max-w-[85%] ${
+                  theme === 'dark' ? 'bg-dark-surface text-dark-text' : 'bg-white text-gray-700 shadow-sm'
+                }`}>
+                  <div className="flex items-center gap-1">
+                    <div className={`w-2 h-2 rounded-full ${
+                      theme === 'dark' ? 'bg-dark-accent' : 'bg-purple-600'
+                    } animate-bounce`}></div>
+                    <div className={`w-2 h-2 rounded-full ${
+                      theme === 'dark' ? 'bg-dark-accent' : 'bg-purple-600'
+                    } animate-bounce`} style={{ animationDelay: '0.2s' }}></div>
+                    <div className={`w-2 h-2 rounded-full ${
+                      theme === 'dark' ? 'bg-dark-accent' : 'bg-purple-600'
+                    } animate-bounce`} style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* This element helps us scroll to the bottom of the messages */}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Field */}
-          <div className="p-3 bg-white border-t border-gray-200">
-            <div className="flex items-end">
+          {/* Input Area - Change to textarea */}
+          <div className={`p-3 border-t ${
+            theme === 'dark' ? 'border-dark-hover bg-dark-surface' : 'border-gray-200 bg-white'
+          }`}>
+            <div className="relative">
               <textarea
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default to avoid new line
                     handleSendMessage();
                   }
                 }}
-                placeholder="Type your message..."
-                className="flex-1 p-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:border-purple-400 bg-white resize-none min-h-[4.5em] max-h-[6.5em] overflow-y-auto"
-                rows={3}
-                disabled={isLoading}
+                placeholder="Type a message..."
+                rows={1}
+                className={`w-full pl-4 pr-12 py-2 rounded-xl resize-none text-sm ${
+                  theme === 'dark' 
+                    ? "bg-dark-hover text-dark-text border-none focus:outline-none placeholder-gray-500"
+                    : "border border-gray-200 focus:outline-none focus:border-purple-500"
+                }`}
+                style={{ 
+                  minHeight: '44px',
+                  maxHeight: '100px',
+                  overflowY: 'auto'
+                }}
               />
-              <button 
+              <button
                 onClick={handleSendMessage}
-                className={`p-2 ml-2 ${isLoading ? 'bg-purple-400' : 'bg-purple-600'} text-white rounded-md`}
-                disabled={isLoading}
+                disabled={inputValue.trim() === '' || isLoading}
+                className={`absolute right-2 bottom-3 w-8 h-8 rounded-full flex items-center justify-center ${
+                  inputValue.trim() === '' || isLoading
+                    ? theme === 'dark' ? 'bg-dark-hover text-gray-500' : 'bg-gray-100 text-gray-400'
+                    : theme === 'dark' ? 'bg-dark-accent text-white' : 'bg-purple-600 text-white'
+                }`}
               >
                 <Send className="w-4 h-4" />
               </button>

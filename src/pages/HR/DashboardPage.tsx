@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as LucideIcons from 'lucide-react';
 import { IoCloudDownloadOutline } from "react-icons/io5";
-import StatCard from '../components/StatCard';
-import JobCard from '../components/JobCard';
-import RecruitmentTable from '../components/RecruitmentTable';
-import CardContainer from '../components/CardContainer';
-import ChatBot from '../components/ChatBot';
+import StatCard from '../../components/hrComponents/StatCard';
+import JobCard from '../../components/hrComponents/JobCard';
+import RecruitmentTable from '../../components/hrComponents/RecruitmentTable';
+import CardContainer from '../../components/hrComponents/CardContainer';
+import ChatBot from '../../components/ChatBot';
 import { 
   getStatData, 
   getJobCardData, 
@@ -14,12 +14,16 @@ import {
   StatData,
   JobCardData,
   RecruitmentProgress
-} from '../services/dashboardService';
-import { dashboardConfig } from '../config/appConfig';
+} from '../../services/dashboardService';
+import { dashboardConfig } from '../../config/appConfig';
 
 type IconProps = { className?: string };
 
-const DashboardPage: React.FC = () => {
+interface DashboardPageProps {
+  theme?: 'light' | 'dark';
+}
+
+const DashboardPage: React.FC<DashboardPageProps> = ({ theme = 'light' }) => {
   const [statData, setStatData] = useState<StatData | null>(null);
   const [jobCards, setJobCards] = useState<JobCardData[]>([]);
   const [recruitmentData, setRecruitmentData] = useState<RecruitmentProgress[]>([]);
@@ -84,7 +88,9 @@ const DashboardPage: React.FC = () => {
   );
 
   if (loading) {
-    return <div className="flex justify-center items-center h-64">Loading...</div>;
+    return <div className={`flex justify-center items-center h-64 ${
+      theme === 'dark' ? 'text-dark-text' : ''
+    }`}>Loading...</div>;
   }
 
   // Dynamic function to get the right icon component for a job
@@ -104,15 +110,27 @@ const DashboardPage: React.FC = () => {
       {/* Welcome Section */}
       <div className="mb-4 flex justify-between items-center">
         <div>
-          <h1 className="text-xl font-bold text-gray-900 mb-1">{dashboardConfig.welcomeMessage}</h1>
-          <p className="text-sm text-gray-600">{dashboardConfig.welcomeSubtext}</p>
+          <h1 className={`text-xl font-bold mb-1 ${
+            theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
+          }`}>{dashboardConfig.welcomeMessage}</h1>
+          <p className={`text-sm ${
+            theme === 'dark' ? 'text-gray-400' : 'text-gray-600'
+          }`}>{dashboardConfig.welcomeSubtext}</p>
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-md text-gray-700">
+          <button className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md ${
+            theme === 'dark' 
+              ? 'border border-dark-hover text-dark-text hover:bg-dark-hover' 
+              : 'border border-gray-200 text-gray-700'
+          }`}>
             <IoCloudDownloadOutline className="w-4 h-4" />
             Export
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-200 rounded-md text-gray-700">
+          <button className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-md ${
+            theme === 'dark' 
+              ? 'border border-dark-hover text-dark-text hover:bg-dark-hover' 
+              : 'border border-gray-200 text-gray-700'
+          }`}>
             <LucideIcons.Plus className="w-4 h-4" />
             Add
           </button>
@@ -128,6 +146,7 @@ const DashboardPage: React.FC = () => {
           changeType={"increase" as "increase" | "decrease"}
           bgColor={dashboardConfig.stats.totalEmployees.bgColor}
           illustration={<EmployeeIllustration />}
+          theme={theme}
         />
         <StatCard
           title="Open Positions"
@@ -136,6 +155,7 @@ const DashboardPage: React.FC = () => {
           changeType={"increase" as "increase" | "decrease"}
           bgColor={dashboardConfig.stats.openPositions.bgColor}
           illustration={<PositionsIllustration />}
+          theme={theme}
         />
         <StatCard
           title="Time to Hire"
@@ -144,11 +164,12 @@ const DashboardPage: React.FC = () => {
           changeType={"decrease" as "increase" | "decrease"}
           bgColor={dashboardConfig.stats.timeToHire.bgColor}
           illustration={<TimeIllustration />}
+          theme={theme}
         />
       </div>
 
       {/* You Need To Hire Section */}
-      <CardContainer title="You Need To Hire" onViewAll={() => console.log("View all jobs clicked")}>
+      <CardContainer title="You Need To Hire" onViewAll={() => console.log("View all jobs clicked")} theme={theme}>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           {jobCards.map((job) => (
             <JobCard
@@ -158,18 +179,18 @@ const DashboardPage: React.FC = () => {
               icon={getJobIcon(job.title)}
               bgColor={job.bgColor}
               options={job.options}
+              theme={theme}
             />
           ))}
         </div>
       </CardContainer>
 
       {/* Recruitment Progress Table */}
-      <CardContainer title="Recruitment Progress">
-        <RecruitmentTable data={recruitmentData} />
+      <CardContainer title="Recruitment Progress" theme={theme}>
+        <RecruitmentTable data={recruitmentData} theme={theme} />
       </CardContainer>
       
-      {/* ChatBot Component */}
-      <ChatBot />
+      {/* ChatBot Component - theme is already passed from Layout */}
     </div>
   );
 };

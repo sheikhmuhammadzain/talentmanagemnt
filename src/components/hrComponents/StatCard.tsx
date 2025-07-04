@@ -7,6 +7,7 @@ interface StatCardProps {
   changeType: 'increase' | 'decrease';
   bgColor: string;
   illustration: React.ReactNode;
+  theme?: 'light' | 'dark';
 }
 
 const StatCard: React.FC<StatCardProps> = ({ 
@@ -15,7 +16,8 @@ const StatCard: React.FC<StatCardProps> = ({
   change, 
   changeType, 
   bgColor, 
-  illustration 
+  illustration,
+  theme = 'light' // Added for API consistency, but not used visually
 }) => {
   return (
     <div className={`${bgColor} rounded-2xl p-6 text-white relative overflow-hidden`}>

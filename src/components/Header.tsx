@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Bell, Settings } from 'lucide-react';
 import { userData } from '../config/appConfig';
 
 interface HeaderProps {
   onThemeChange?: (theme: 'light' | 'dark') => void;
+  theme?: 'light' | 'dark';
 }
 
-const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
-  const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>('light');
+const Header: React.FC<HeaderProps> = ({ onThemeChange, theme = 'light' }) => {
+  const [activeTheme, setActiveTheme] = useState<'light' | 'dark'>(theme);
   const [activePage, setActivePage] = useState('dashboard');
+
+  // Sync component state with prop
+  useEffect(() => {
+    setActiveTheme(theme);
+  }, [theme]);
 
   // Navigation items for header
   const navItems = [
@@ -17,15 +23,19 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
   ];
 
   // Handle theme change
-  const handleThemeChange = (theme: 'light' | 'dark') => {
-    setActiveTheme(theme);
+  const handleThemeChange = (newTheme: 'light' | 'dark') => {
+    setActiveTheme(newTheme);
     if (onThemeChange) {
-      onThemeChange(theme);
+      onThemeChange(newTheme);
     }
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-2">
+    <header className={`px-4 py-2 border-b ${
+      theme === 'dark' 
+        ? 'bg-dark-surface border-dark-hover' 
+        : 'bg-white border-gray-200'
+    }`}>
       <div className="flex items-center justify-between">
         {/* Navigation */}
         <div className="flex items-center gap-4">
@@ -34,7 +44,13 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
               <button
                 key={item.id}
                 className={`text-sm font-medium ${
-                  activePage === item.id ? 'text-purple-600' : 'text-gray-600 hover:text-gray-900'
+                  activePage === item.id 
+                    ? theme === 'dark'
+                      ? 'text-dark-accent' 
+                      : 'text-purple-600'
+                    : theme === 'dark'
+                      ? 'text-dark-text hover:text-white' 
+                      : 'text-gray-600 hover:text-gray-900'
                 }`}
                 onClick={() => setActivePage(item.id)}
               >
@@ -47,10 +63,16 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
         {/* Right Side Actions */}
         <div className="flex items-center gap-3">
           {/* Theme Toggle */}
-          <div className="flex bg-gray-100 rounded-lg p-0.5">
+          <div className={`flex rounded-lg p-0.5 ${
+            theme === 'dark' ? 'bg-dark-surface' : 'bg-gray-100'
+          }`}>
             <button 
               className={`px-2 py-1 text-xs rounded-md transition-colors ${
-                activeTheme === 'dark' ? 'bg-purple-600 text-white' : 'text-gray-600'
+                activeTheme === 'dark' 
+                  ? 'bg-dark-accent text-white' 
+                  : theme === 'dark' 
+                    ? 'text-dark-text' 
+                    : 'text-gray-600'
               }`}
               onClick={() => handleThemeChange('dark')}
             >
@@ -58,7 +80,13 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
             </button>
             <button 
               className={`px-2 py-1 text-xs rounded-md transition-colors ${
-                activeTheme === 'light' ? 'bg-purple-600 text-white' : 'text-gray-600'
+                activeTheme === 'light' 
+                  ? theme === 'dark' 
+                    ? 'bg-dark-accent text-white' 
+                    : 'bg-purple-600 text-white' 
+                  : theme === 'dark' 
+                    ? 'text-dark-text' 
+                    : 'text-gray-600'
               }`}
               onClick={() => handleThemeChange('light')}
             >
@@ -67,19 +95,33 @@ const Header: React.FC<HeaderProps> = ({ onThemeChange }) => {
           </div>
 
           {/* Search */}
-          <button className="p-1.5 text-gray-600 hover:text-gray-900">
+          <button className={`p-1.5 ${
+            theme === 'dark' 
+              ? 'text-dark-text hover:bg-dark-hover hover:text-white rounded-md' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`}>
             <Search className="w-4 h-4" />
           </button>
 
           {/* Settings */}
-          <button className="p-1.5 text-gray-600 hover:text-gray-900">
+          <button className={`p-1.5 ${
+            theme === 'dark' 
+              ? 'text-dark-text hover:bg-dark-hover hover:text-white rounded-md' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`}>
             <Settings className="w-4 h-4" />
           </button>
 
           {/* Notification */}
-          <button className="p-1.5 text-gray-600 hover:text-gray-900 relative">
+          <button className={`p-1.5 relative ${
+            theme === 'dark' 
+              ? 'text-dark-text hover:bg-dark-hover hover:text-white rounded-md' 
+              : 'text-gray-600 hover:text-gray-900'
+          }`}>
             <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-purple-600 rounded-full text-white text-xs flex items-center justify-center">3</span>
+            <span className={`absolute -top-1 -right-1 w-4 h-4 bg-dark-accent rounded-full text-white text-xs flex items-center justify-center`}>
+              3
+            </span>
           </button>
 
           {/* User Avatar */}
