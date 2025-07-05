@@ -9,9 +9,19 @@ interface LayoutProps {
   setActiveTab: (tab: string) => void;
   theme?: 'light' | 'dark';
   onThemeChange?: (theme: 'light' | 'dark') => void;
+  activeRole?: 'user' | 'hr' | 'manager';
+  setActiveRole?: (role: 'user' | 'hr' | 'manager') => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, theme: themeProp = 'light', onThemeChange }) => {
+const Layout: React.FC<LayoutProps> = ({ 
+  children, 
+  activeTab, 
+  setActiveTab, 
+  theme: themeProp = 'light', 
+  onThemeChange,
+  activeRole = 'hr',
+  setActiveRole
+}) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(themeProp);
 
   // Sync with prop if changed externally
@@ -43,7 +53,13 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, them
 
   return (
     <div className={`flex h-screen ${theme === 'dark' ? 'bg-dark-background' : 'bg-gray-50'}`}>
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} theme={theme} />
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        theme={theme}
+        activeRole={activeRole}
+        setActiveRole={setActiveRole}
+      />
       
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header onThemeChange={handleThemeChange} theme={theme} />

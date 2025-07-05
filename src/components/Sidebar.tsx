@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as LucideIcons from 'lucide-react';
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { navigationItems, roleTabs, userData } from '../config/appConfig';
+import { getRoutesForRole } from '../routes';
 
 interface SidebarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   theme?: 'light' | 'dark';
+  activeRole?: 'user' | 'hr' | 'manager';
+  setActiveRole?: (role: 'user' | 'hr' | 'manager') => void;
 }
 
 interface IconProps {
@@ -15,9 +18,23 @@ interface IconProps {
 
 type LucideIconComponent = React.ComponentType<IconProps>;
 
-const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'light' }) => {
+const Sidebar: React.FC<SidebarProps> = ({ 
+  activeTab, 
+  setActiveTab, 
+  theme = 'light',
+  activeRole = 'hr',
+  setActiveRole
+}) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [activeRole, setActiveRole] = useState('hr');
+
+  // Handle role change
+  const handleRoleChange = (newRole: 'user' | 'hr' | 'manager') => {
+    if (setActiveRole) {
+      setActiveRole(newRole);
+      // Automatically switch to dashboard when changing roles
+      setActiveTab('dashboard');
+    }
+  };
 
   // Dynamic function to get icon component by name
   const getIconComponent = (iconName: string) => {
@@ -30,6 +47,9 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
       <LucideIcons.Circle className={`w-5 h-5 ${theme === 'dark' ? 'text-dark-text' : ''}`} />
     );
   };
+
+  // Get available routes for current role
+  const availableRoutes = getRoutesForRole(activeRole);
   
   return (
     <div className={`${collapsed ? 'w-16' : 'w-64'} h-screen flex flex-col transition-all duration-300 relative ${
@@ -56,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab, theme = 'lig
             {roleTabs.map((role) => (
               <button 
                 key={role.id}
-                onClick={() => setActiveRole(role.id)}
+                onClick={() => handleRoleChange(role.id as 'user' | 'hr' | 'manager')}
                 className={`flex-1 px-3 py-2 text-xs rounded-md transition-colors ${
                   activeRole === role.id
                     ? 'bg-dark-accent text-white'
