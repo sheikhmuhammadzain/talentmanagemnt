@@ -22,40 +22,107 @@ export interface Route {
 
 // Main application routes
 export const routes: Route[] = [
+  // Common routes
+  {
+    id: 'home',
+    label: 'Home',
+    icon: 'Home',
+    component: DashboardPage, // Use a simple home page for all users
+    roles: ['user', 'hr', 'manager']
+  },
+  
+  // HR-specific routes
   {
     id: 'dashboard',
     label: 'Dashboard',
-    icon: '📊',
+    icon: 'BarChart3',
     component: DashboardPage,
     roles: ['hr']
   },
   {
-    id: 'manager-dashboard',
+    id: 'recruitment',
+    label: 'Recruitment',
+    icon: 'Users',
+    component: RecruitmentPage,
+    roles: ['hr']
+  },
+  {
+    id: 'tasks',
+    label: 'Tasks',
+    icon: 'CheckSquare',
+    component: DashboardPage, // Replace with actual component when created
+    roles: ['hr']
+  },
+  {
+    id: 'chatbots',
+    label: 'AI Chatbots',
+    icon: 'Bot',
+    component: DashboardPage, // Replace with actual component when created
+    roles: ['hr']
+  },
+  
+  // Manager-specific routes
+  {
+    id: 'dashboard',
     label: 'Dashboard',
-    icon: '📊',
+    icon: 'BarChart3',
     component: ManagerDashboardPage,
     roles: ['manager']
   },
   {
-    id: 'recruitment',
-    label: 'Recruitment',
-    icon: '👥',
-    component: RecruitmentPage,
-    roles: ['hr']
+    id: 'team-management',
+    label: 'Team Management',
+    icon: 'Users2',
+    component: ManagerDashboardPage, // Replace with actual component when created
+    roles: ['manager']
   },
+  {
+    id: 'clients',
+    label: 'Clients',
+    icon: 'UserPlus',
+    component: ManagerDashboardPage, // Replace with actual component when created
+    roles: ['manager']
+  },
+  {
+    id: 'projects',
+    label: 'Projects',
+    icon: 'Briefcase',
+    component: ManagerDashboardPage, // Replace with actual component when created
+    roles: ['manager']
+  },
+  {
+    id: 'attendance',
+    label: 'Attendance & Leave',
+    icon: 'Clock',
+    component: ManagerDashboardPage, // Replace with actual component when created
+    roles: ['manager']
+  },
+  
+  // Shared routes (but with different components based on role)
+  {
+    id: 'reporting',
+    label: 'Reporting & Analytics',
+    icon: 'PieChart',
+    component: DashboardPage, // Replace with actual component when created
+    roles: ['hr', 'manager']
+  }
 ];
 
 // Helper function to get component by route ID and role
 export const getRouteComponent = (routeId: string, role?: string): PageComponent => {
-  // If it's a dashboard request and role is manager, return manager dashboard
-  if (routeId === 'dashboard' && role === 'manager') {
-    const managerRoute = routes.find(r => r.id === 'manager-dashboard');
-    return managerRoute ? managerRoute.component : DashboardPage;
+  // Find routes matching both ID and role
+  const matchingRoutes = routes.filter(
+    r => r.id === routeId && (!r.roles || (role && r.roles.includes(role)))
+  );
+  
+  // If found, return the component
+  if (matchingRoutes.length > 0) {
+    return matchingRoutes[0].component;
   }
   
-  // Otherwise, find the route normally
-  const route = routes.find(r => r.id === routeId);
-  return route ? route.component : DashboardPage; // Default to Dashboard
+  // Default fallback - return dashboard for the role, or HR dashboard as ultimate fallback
+  const defaultRoute = routes.find(r => r.id === 'dashboard' && (!r.roles || (role && r.roles.includes(role))));
+  return defaultRoute ? defaultRoute.component : DashboardPage;
 };
 
 // Helper function to get routes for a specific role

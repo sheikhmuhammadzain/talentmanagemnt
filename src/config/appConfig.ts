@@ -31,14 +31,19 @@ export const dashboardConfig = {
   }
 };
 
-// Navigation items
+// Navigation items with role access control
 export const navigationItems = [
-  { id: 'home', label: 'Home', icon: 'Home' },
-  { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3' },
-  { id: 'recruitment', label: 'Recruitment', icon: 'Users' },
-  { id: 'tasks', label: 'Tasks', icon: 'CheckSquare' },
-  { id: 'reporting', label: 'Reporting & Analytics', icon: 'PieChart' },
-  { id: 'chatbots', label: 'AI Chatbots', icon: 'Bot' }
+  { id: 'home', label: 'Home', icon: 'Home', roles: ['user', 'hr', 'manager'] },
+  { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3', roles: ['hr', 'manager'] },
+  { id: 'recruitment', label: 'Recruitment', icon: 'Users', roles: ['hr'] },
+  { id: 'tasks', label: 'Tasks', icon: 'CheckSquare', roles: ['hr'] },
+  { id: 'chatbots', label: 'AI Chatbots', icon: 'Bot', roles: ['hr'] },
+  { id: 'team-management', label: 'Team Management', icon: 'Users2', roles: ['manager'] },
+  { id: 'clients', label: 'Clients', icon: 'UserPlus', roles: ['manager'] },
+  { id: 'projects', label: 'Projects', icon: 'Briefcase', roles: ['manager'] },
+  { id: 'attendance', label: 'Attendance & Leave', icon: 'Clock', roles: ['manager'] },
+  { id: 'reporting', label: 'Reporting & Analytics', icon: 'PieChart', roles: ['hr', 'manager'] },
+
 ];
 
 // Role tabs

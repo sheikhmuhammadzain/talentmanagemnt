@@ -51,6 +51,11 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Get available routes for current role
   const availableRoutes = getRoutesForRole(activeRole);
   
+  // Filter navigation items based on active role
+  const filteredNavigationItems = navigationItems.filter(
+    item => item.roles && item.roles.includes(activeRole)
+  );
+
   return (
     <div className={`${collapsed ? 'w-16' : 'w-64'} h-screen flex flex-col transition-all duration-300 relative ${
       theme === 'dark' 
@@ -114,7 +119,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Navigation */}
       <nav className={`flex-1 ${collapsed ? 'px-2 py-4' : 'px-4 py-2'}`}>
-        {navigationItems.map((item) => {
+        {filteredNavigationItems.map((item) => {
           const isActive = activeTab === item.id;
           
           return (
