@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     const icons = LucideIcons as unknown as Record<string, LucideIconComponent>;
     const IconComponent = icons[iconName];
     return IconComponent ? (
-      <IconComponent className={`w-5 h-5 ${theme === 'dark' ? 'text-dark-text' : ''}`} />
+      <IconComponent className={`w-4 h-4 ${theme === 'dark' ? 'text-dark-text' : ''}`} />
     ) : (
       <LucideIcons.Circle className={`w-5 h-5 ${theme === 'dark' ? 'text-dark-text' : ''}`} />
     );
@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       {/* Header */}
       <div className={`p-4 ${
         theme === 'dark' ? 'border-b border-dark-border' : 'border-b border-gray-200'
-      } ${collapsed ? 'flex justify-center' : ''}`}>
+      } ${collapsed ? 'flex justify-center mt-10' : ''}`}>
         {!collapsed && (
           <div className={`flex rounded-lg p-1 mb-3 ${
             theme === 'dark' ? 'bg-dark-hover' : 'bg-gray-100'
@@ -107,7 +107,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <input
               type="text"
               placeholder="Search"
-              className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-dark-accent focus:border-transparent ${
+              className={`w-full pl-10 pr-4 py-2 rounded-[20px] text-sm focus:outline-none focus:ring-2 focus:ring-dark-accent focus:border-transparent ${
                 theme === 'dark'
                   ? 'bg-dark-hover border border-dark-border text-dark-text placeholder-gray-500'
                   : 'bg-white border border-gray-200 text-gray-900'
@@ -126,7 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors mb-1 ${
+              className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-3 px-3 py-3 rounded-lg text-xs font-medium transition-colors mb-1 ${
                 isActive 
                   ? 'bg-dark-accent text-white' 
                   : theme === 'dark'
@@ -160,10 +160,10 @@ const Sidebar: React.FC<SidebarProps> = ({
               className="w-8 h-8 rounded-full object-cover"
             />
             <div className="flex-1">
-              <p className={`text-sm font-medium ${
+              <p className={`text-[12px] font-medium ${
                 theme === 'dark' ? 'text-dark-text' : 'text-gray-900'
               }`}>{userData.name}</p>
-              <p className={`text-xs ${
+              <p className={`text-[10px] ${
                 theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
               }`}>{userData.email}</p>
             </div>
