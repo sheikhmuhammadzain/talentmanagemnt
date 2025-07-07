@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import StatCard from '../../components/hrComponents/StatCard';
-import TeamSection from '../../components/managerComponents/TeamSection';
 import MonthlyFinanceSection from '../../components/managerComponents/MonthlyFinanceSection';
 import TaskListSection from '../../components/managerComponents/TaskListSection';
 import StatsIllustration from '../../components/managerComponents/StatsIllustration';
@@ -14,14 +13,6 @@ interface TaskItem {
   title: string;
   date: string;
   time: string;
-}
-
-interface TeamRole {
-  id: string;
-  name: string;
-  count: number;
-  change: string;
-  avatars: string[];
 }
 
 const ManagerDashboardPage: React.FC<ManagerDashboardPageProps> = ({ theme = 'light' }) => {
@@ -43,69 +34,6 @@ const ManagerDashboardPage: React.FC<ManagerDashboardPageProps> = ({ theme = 'li
       title: 'Approve the Leave Request',
       date: '12 March 2025',
       time: '12:30 PM'
-    }
-  ]);
-
-  const [teamRoles] = useState<TeamRole[]>([
-    {
-      id: 'ai-devs',
-      name: 'AI Devs',
-      count: 10,
-      change: '+10',
-      avatars: [
-        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
-      ]
-    },
-    {
-      id: 'back-end',
-      name: 'Back End',
-      count: 10,
-      change: '+10',
-      avatars: [
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
-      ]
-    },
-    {
-      id: 'designer',
-      name: 'Designer',
-      count: 5,
-      change: '+5',
-      avatars: [
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
-      ]
-    },
-    {
-      id: 'front-end',
-      name: 'Front End',
-      count: 15,
-      change: '+15',
-      avatars: [
-        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
-      ]
-    },
-    {
-      id: 'seo',
-      name: 'SEO',
-      count: 15,
-      change: '+15',
-      avatars: [
-        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
-        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
-      ]
     }
   ]);
 
@@ -152,12 +80,11 @@ const ManagerDashboardPage: React.FC<ManagerDashboardPageProps> = ({ theme = 'li
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Team Section */}
-        <TeamSection teamRoles={teamRoles} theme={theme} />
-        
-        {/* Monthly Finance Section */}
-        <MonthlyFinanceSection theme={theme} />
+      <div className="grid grid-cols-3 lg:grid-cols-3 gap-6">
+        {/* Monthly Finance Section - Now takes full width of first column */}
+        <div className='col-span-2'>
+          <MonthlyFinanceSection theme={theme} />
+        </div>
         
         {/* Task List Section */}
         <TaskListSection tasks={tasks} theme={theme} />

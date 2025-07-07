@@ -26,6 +26,14 @@ export interface RecruitmentProgress {
   statusColor: string;
 }
 
+export interface TeamRole {
+  id: string;
+  name: string;
+  count: number;
+  change: string;
+  avatars: string[];
+}
+
 // Mock data - now derived from our central config
 const statData: StatData = {
   totalEmployees: dashboardConfig.stats.totalEmployees.value,
@@ -110,4 +118,69 @@ export const getRecruitmentProgress = (): Promise<RecruitmentProgress[]> => {
 // Helper function to get icon name from job title
 export const getIconNameForJob = (jobTitle: string): string => {
   return iconMapping[jobTitle as keyof typeof iconMapping] || 'Briefcase';
+};
+
+export const getTeamRoles = (): TeamRole[] => {
+  return [
+    {
+      id: 'ai-devs',
+      name: 'AI Devs',
+      count: 10,
+      change: '+10',
+      avatars: [
+        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
+      ]
+    },
+    {
+      id: 'back-end',
+      name: 'Back End',
+      count: 10,
+      change: '+10',
+      avatars: [
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
+      ]
+    },
+    {
+      id: 'designer',
+      name: 'Designer',
+      count: 5,
+      change: '+5',
+      avatars: [
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
+      ]
+    },
+    {
+      id: 'front-end',
+      name: 'Front End',
+      count: 15,
+      change: '+15',
+      avatars: [
+        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
+      ]
+    },
+    {
+      id: 'seo',
+      name: 'SEO',
+      count: 15,
+      change: '+15',
+      avatars: [
+        'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop',
+        'https://images.pexels.com/photos/1674752/pexels-photo-1674752.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&fit=crop'
+      ]
+    }
+  ];
 }; 

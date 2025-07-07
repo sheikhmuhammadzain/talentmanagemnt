@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import * as LucideIcons from 'lucide-react';
 import { MdKeyboardDoubleArrowLeft } from "react-icons/md";
 import { navigationItems, roleTabs, userData } from '../config/appConfig';
-import { getRoutesForRole } from '../routes';
+import TeamSidebarSection from './managerComponents/TeamSidebarSection';
+import { getTeamRoles } from '../services/dashboardService';
 
 interface SidebarProps {
   activeTab: string;
@@ -48,8 +49,8 @@ const Sidebar: React.FC<SidebarProps> = ({
     );
   };
 
-  // Get available routes for current role
-  const availableRoutes = getRoutesForRole(activeRole);
+  // Get team roles for the sidebar if the active role is manager
+  const teamRoles = activeRole === 'manager' ? getTeamRoles() : [];
   
   // Filter navigation items based on active role
   const filteredNavigationItems = navigationItems.filter(
@@ -70,80 +71,104 @@ const Sidebar: React.FC<SidebarProps> = ({
         <MdKeyboardDoubleArrowLeft className={`w-5 h-5 ${collapsed ? 'rotate-180' : ''} transition-transform`} />
       </button>
       
-      {/* Header */}
-      <div className={`p-4 ${
-        theme === 'dark' ? 'border-b border-dark-border' : 'border-b border-gray-200'
-      } ${collapsed ? 'flex justify-center mt-10' : ''}`}>
+      {/* Top Fixed Section */}
+      <div className="flex-shrink-0">
+        {/* Header */}
+        <div className={`p-4 ${
+          theme === 'dark' ? 'border-b border-dark-border' : 'border-b border-gray-200'
+        } ${collapsed ? 'flex justify-center' : ''}`}>
+          {!collapsed && (
+            <div className="flex items-center justify-between mb-2">
+              
+            </div>
+          )}
+        </div>
+
+        {/* Role Tabs - Only visible when sidebar is expanded */}
         {!collapsed && (
-          <div className={`flex rounded-lg p-1 mb-3 ${
-            theme === 'dark' ? 'bg-dark-hover' : 'bg-gray-100'
-          }`}>
-            {roleTabs.map((role) => (
-              <button 
-                key={role.id}
-                onClick={() => handleRoleChange(role.id as 'user' | 'hr' | 'manager')}
-                className={`flex-1 px-3 py-2 text-xs rounded-md transition-colors ${
-                  activeRole === role.id
-                    ? 'bg-dark-accent text-white'
-                    : theme === 'dark'
-                      ? 'text-dark-text hover:bg-dark-background'
-                      : 'text-gray-600 hover:bg-gray-200'
+          <div className="px-3 py-2">
+            <div className={`flex rounded-lg p-1 ${
+              theme === 'dark' ? 'bg-dark-hover' : 'bg-gray-100'
+            }`}>
+              {roleTabs.map((role) => (
+                <button 
+                  key={role.id}
+                  onClick={() => handleRoleChange(role.id as 'user' | 'hr' | 'manager')}
+                  className={`flex-1 px-3 py-2 text-xs rounded-md transition-colors ${
+                    activeRole === role.id
+                      ? 'bg-dark-accent text-white'
+                      : theme === 'dark'
+                        ? 'text-dark-text hover:bg-dark-background'
+                        : 'text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {role.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Search */}
+        {!collapsed && (
+          <div className="p-4">
+            <div className="relative">
+              <LucideIcons.Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
+                theme === 'dark' ? 'text-gray-400' : 'text-gray-400'
+              }`} />
+              <input
+                type="text"
+                placeholder="Search"
+                className={`w-full pl-10 pr-4 py-2 rounded-[20px] text-sm focus:outline-none focus:ring-2 focus:ring-dark-accent focus:border-transparent ${
+                  theme === 'dark'
+                    ? 'bg-dark-hover border border-dark-border text-dark-text placeholder-gray-500'
+                    : 'bg-white border border-gray-200 text-gray-900'
                 }`}
-              >
-                {role.label}
-              </button>
-            ))}
+              />
+            </div>
           </div>
         )}
       </div>
 
-      {/* Search */}
-      {!collapsed && (
-        <div className="p-4">
-          <div className="relative">
-            <LucideIcons.Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 ${
-              theme === 'dark' ? 'text-gray-400' : 'text-gray-400'
-            }`} />
-            <input
-              type="text"
-              placeholder="Search"
-              className={`w-full pl-10 pr-4 py-2 rounded-[20px] text-sm focus:outline-none focus:ring-2 focus:ring-dark-accent focus:border-transparent ${
-                theme === 'dark'
-                  ? 'bg-dark-hover border border-dark-border text-dark-text placeholder-gray-500'
-                  : 'bg-white border border-gray-200 text-gray-900'
-              }`}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Navigation */}
-      <nav className={`flex-1 ${collapsed ? 'px-2 py-4' : 'px-4 py-2'}`}>
-        {filteredNavigationItems.map((item) => {
-          const isActive = activeTab === item.id;
+      {/* Scrollable Section */}
+      <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin' }}>
+        {/* Navigation */}
+        <nav className={`${collapsed ? 'px-2 py-4 mt-10' : 'px-4 py-2'}`}>
+          {filteredNavigationItems.map((item) => {
+            const isActive = activeTab === item.id;
+            
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-2 px-3 py-3 rounded-lg text-xs font-medium transition-colors mb-1 ${
+                  isActive 
+                    ? 'bg-dark-accent text-white' 
+                    : theme === 'dark'
+                      ? 'text-dark-text hover:bg-dark-hover'
+                      : 'text-gray-600 hover:bg-gray-100'
+                }`}
+                title={collapsed ? item.label : ''}
+              >
+                {getIconComponent(item.icon)}
+                {!collapsed && item.label}
+              </button>
+            );
+          })}
           
-          return (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full flex ${collapsed ? 'justify-center' : ''} items-center gap-3 px-3 py-3 rounded-lg text-xs font-medium transition-colors mb-1 ${
-                isActive 
-                  ? 'bg-dark-accent text-white' 
-                  : theme === 'dark'
-                    ? 'text-dark-text hover:bg-dark-hover'
-                    : 'text-gray-600 hover:bg-gray-100'
-              }`}
-              title={collapsed ? item.label : ''}
-            >
-              {getIconComponent(item.icon)}
-              {!collapsed && item.label}
-            </button>
-          );
-        })}
-      </nav>
+          {/* Team Section for Manager Role - Only visible when sidebar is expanded */}
+          {!collapsed && activeRole === 'manager' && teamRoles.length > 0 && (
+            <TeamSidebarSection 
+              teamRoles={teamRoles} 
+              theme={theme} 
+              collapsed={collapsed} 
+            />
+          )}
+        </nav>
+      </div>
 
-      {/* User Profile */}
-      <div className={`p-4 ${
+      {/* Fixed Bottom User Profile */}
+      <div className={`flex-shrink-0 p-4 ${
         theme === 'dark' ? 'border-t border-dark-border' : 'border-t border-gray-200'
       } ${collapsed ? 'flex justify-center' : ''}`}>
         {collapsed ? (

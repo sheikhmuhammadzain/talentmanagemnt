@@ -15,7 +15,7 @@ interface TaskListSectionProps {
 
 const TaskListSection: React.FC<TaskListSectionProps> = ({ tasks, theme = 'light' }) => {
   return (
-    <div className={`rounded-xl p-6 ${
+    <div className={`rounded-xl p-6  ${
       theme === 'dark' ? 'bg-dark-card border border-dark-border' : 'bg-white border border-gray-100'
     }`}>
       <div className="flex items-center justify-between mb-6">
