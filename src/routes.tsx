@@ -1,6 +1,7 @@
 import React from 'react';
 import DashboardPage from './pages/HR/DashboardPage';
 import RecruitmentPage from './pages/HR/RecruitmentPage';
+import CareerPage from './pages/HR/CareerPage';
 import ManagerDashboardPage from './pages/Manager/ManagerDashboardPage';
 
 // Props type for page components
@@ -44,6 +45,13 @@ export const routes: Route[] = [
     label: 'Recruitment',
     icon: 'Users',
     component: RecruitmentPage,
+    roles: ['hr']
+  },
+  {
+    id: 'career',
+    label: 'Careers',
+    icon: 'Briefcase',
+    component: CareerPage,
     roles: ['hr']
   },
   {

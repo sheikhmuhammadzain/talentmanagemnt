@@ -36,6 +36,7 @@ export const navigationItems = [
   { id: 'home', label: 'Home', icon: 'Home', roles: ['user', 'hr', 'manager'] },
   { id: 'dashboard', label: 'Dashboard', icon: 'BarChart3', roles: ['hr', 'manager'] },
   { id: 'recruitment', label: 'Recruitment', icon: 'Users', roles: ['hr'] },
+  { id: 'career', label: 'Careers', icon: 'Briefcase', roles: ['hr'] },
   { id: 'tasks', label: 'Tasks', icon: 'CheckSquare', roles: ['hr'] },
   { id: 'chatbots', label: 'AI Chatbots', icon: 'Bot', roles: ['hr'] },
   { id: 'team-management', label: 'Team Management', icon: 'Users2', roles: ['manager'] },
@@ -63,12 +64,23 @@ export const recruitmentTabs = [
   { id: 'summary', label: 'Summary', icon: '📈' }
 ];
 
+// Career tabs
+export const careerTabs = [
+  { id: 'current-openings', label: 'Current Openings', icon: '🔍' },
+  { id: 'upcoming-positions', label: 'Upcoming Positions', icon: '📅' },
+  { id: 'internships', label: 'Internships', icon: '🎓' },
+  { id: 'benefits', label: 'Benefits', icon: '✨' },
+  { id: 'faq', label: 'FAQ', icon: '❓' }
+];
+
 // Departments
 export const departments = [
   { id: 'view-all', label: 'View all' },
   { id: 'design', label: 'Design' },
-  { id: 'software-engineering', label: 'Software Engineering' },
-  { id: 'customer-success', label: 'Customer Success' }
+  { id: 'software-development', label: 'Software Engineering' },
+  { id: 'customer-success', label: 'Customer Success' },
+  { id: 'marketing', label: 'Marketing' },
+  { id: 'hr', label: 'HR & Recruiting' }
 ];
 
 // Icons mapping
